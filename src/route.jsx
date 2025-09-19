@@ -11,7 +11,6 @@ function AppRouter() {
         <Route path="/" element={<App />} />
         <Route path="/back-office" element={<Back />} />
         <Route path="/recup_password" element={<Recup_password />} />
-        <Route path="/back-office/Connection.jsx" element={<App />} />
       </Routes>
 
     </BrowserRouter>

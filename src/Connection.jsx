@@ -2,6 +2,7 @@ import React,{ useState } from 'react'
 import './CSS.css'
 import logo from './img/logo_inci.png'
 import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { Nav_bar } from './composants';
 
 function App() {
   function Passwordforget(){
@@ -46,28 +47,10 @@ function handleSubmit(e){
       
     <>
     {/* Navbar */}
-    <header className='bg-white shadow-md'>
-      <div className='container mx-auto flex justify-between items-center p-4'>
-        <nav>
-          <img src={logo} alt="Logo" className="h-12 w-auto" />
-        </nav>
-        <nav>
-          <ul className='flex space-x-6'>
-            <li className='text-gray-600 hover:text-blue-600 cursor-pointer font-medium'>ACCUEIL</li>
-            <li className='text-gray-600 hover:text-blue-600 cursor-pointer font-medium'>PRODUITS</li>
-            <li className='text-gray-600 hover:text-blue-600 cursor-pointer font-medium'>A PROPOS</li>
-          </ul>
-        </nav>
-        <nav>
-          <button className='bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors'>
-            Sign in
-          </button>
-        </nav>
-      </div>
-    </header>
-
+    <Nav_bar />
     {/* Form */}
-    <div className='min-h-screen flex items-center justify-center bg-gray-50'>
+
+    <div className='min-h-screen flex items-center justify-center bg-white container mx-auto'>
       <div className='bg-white p-8 rounded-lg shadow-lg w-full max-w-md'>
         <h2 className='text-2xl font-bold text-center text-gray-800 mb-6'>Connexion</h2>
         <form>
