@@ -1,1 +1,10 @@
+@font-face {
+    font-family: GideonRoman;
+    src: url(./font/Gideon_Roman/GideonRoman-Regular.ttf);
+}
+
 @import "tailwindcss";
+
+@theme{
+    --font-gideonRoman : GideonRoman, regular  
+}

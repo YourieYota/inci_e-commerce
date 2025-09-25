@@ -1,8 +1,10 @@
-import React from "react"
+import React, { useState } from "react";
 import './CSS.css'
+import { Link } from "react-router-dom";
 import logo from './img/logo_inci.png'
-import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
+
 import { FaUser } from "react-icons/fa";
+import { FaShoppingCart } from "react-icons/fa";
 import { Search } from "lucide-react";
 import gestion_clients from './img/gestion_clients.webp';
 import gestion_commande from './img/gestion_commandes.webp';
@@ -34,7 +36,21 @@ import gestion_Comptes from './img/gestion_Comptes.webp';
     src : gestion_Comptes,
     name : "Gestion des comptes",
     nom : "comptes",
+    nbre : 3},
+
+    {
+    id : 5,
+    src : gestion_commande,
+    name : "Gestion des commandes",
+    nom : "commandes",
+    nbre : 3}, 
+
+    {id : 6,
+    src : gestion_produits,
+    name : "Gestion des produits",
+    nom : "produits",
     nbre : 3}
+
   ]
 export function Nav_bar() {
        return(<>
@@ -64,21 +80,21 @@ export function Nav_bar() {
     export function Nav_bar_with_searchbar() {
        return(<>
        <header className=" rounded-2xl container fixed left-1/2 -translate-x-1/2 bg-green-700 top-0 px-5 z-10">
-            <div className='container mx-auto flex md:justify-between items-center py-2 '>
+            <div className='container flex md:justify-between items-center justify-between py-2 mx-auto'>
               <button className="block sm:hidden p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" 
                     className="w-7 h-7 text-white" 
                     fill="none" 
                     viewBox="0 0 24 24" 
-                    stroke="currentColor">
-                  <path strokeLinecap="round"  strokeWidth="2" 
+                    stroke="currentColor" strokeLineCap="round" strokeWidth="2">
+                  <path
                         d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-               <nav className="flex items-center mx-auto">
+               <nav className="flex items-center justify-between">
                  <img src={logo} alt="Logo" className="h-12 w-auto" />
                </nav>
-               <nav className="flex flex-row ">
+               <nav className="flex flex-row mx-auto">
                  <ul className=' space-x-6 flex-row hidden md:flex'>
                    <li className='text-white hover:text-blue-600 hover:font-serif cursor-pointer font-medium'>ACCUEIL</li>
                    <li className='text-white hover:text-blue-600 hover:font-serif cursor-pointer font-medium'>PRODUITS</li>
@@ -93,10 +109,66 @@ export function Nav_bar() {
                   <FaUser className="text-white cursor-pointer w-6 h-6" />
                  </Link>
                </nav>
-               
-               </div>
+                       </div>
+
     </header></>)
+    
     }
+    
+    export function Nav_bar_with_searchbar_vitrine({ active, setActive }) {
+      const handleActive =(e)=>{
+        setActive(e.currentTarget.textContent)
+        console.log(active)
+      }
+      if (active === "ACCUEIL"){ }
+
+       return(<>
+       <header className=" rounded-2xl container fixed left-1/2 -translate-x-1/2 bg-green-700 top-0 px-5 z-10">
+            <div className='container flex md:justify-between items-center justify-between py-2 mx-auto'>
+              <button className="block sm:hidden p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                    className="w-7 h-7 text-white" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor" strokeLinecap="round" strokeWidth="2">
+                  <path
+                        d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+               <nav className="flex items-center justify-between">
+                 <img src={logo} alt="Logo" className="h-12 w-auto" />
+               </nav>
+               <nav className="flex flex-row mx-auto">
+                 <ul className=' space-x-6 flex-row hidden md:flex'>
+                   <li onClick= {handleActive} className={ ` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "ACCUEIL" ? "text-red-500 underline underline-offset-2 " : "text-white"}`}>ACCUEIL</li>
+                   <li onClick={handleActive} className= {` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "PRODUITS" ? "text-red-500 underline underline-offset-2 " : "text-white"}`} >PRODUITS</li>
+
+                   <li onClick={handleActive} className= {` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "MES COMMANDES" ? "text-red-500 underline underline-offset-2 " : "text-white"}`} >MES COMMANDES</li>
+                 </ul>
+                 {/*searchbar*/}
+                 <input type="text" placeholder="Rechercher" className="ml-5 rounded-md border-1 px-4 py-1 text-center my-[-5px] border-white text-white hidden md:flex"/>
+                 <Search className="m-1 w-20 h-5 text-white cursor-pointer hidden md:flex" />
+               </nav>
+               
+
+               <nav className=" flex items-center ml-auto">
+                <button className="relative mx-5 cursor-pointer">
+                   <FaShoppingCart className="w-6 h-6 text-white cursor-pointer" />
+            {/* Badge pour le nombre d'articles */}
+                    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">
+                      3
+                    </span>
+                  </button>
+                 <Link to="/" >
+                  <FaUser className="text-white cursor-pointer w-6 h-6" />
+                 </Link>
+               </nav>
+                       </div>
+
+    </header></>)
+    
+    }
+
 function Component() {
 
 }
