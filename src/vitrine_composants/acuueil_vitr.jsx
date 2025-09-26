@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import  {Nav_bar, Nav_bar_with_searchbar, Nav_bar_with_searchbar_vitrine}  from '../composants';
-import img_pub from '../img/publicite_compressee.webp';
+import img_banniere from '../img/banniere_compressee.webp';
 import '../CSS.css';
 import Carousel from '../carousel';
 
@@ -56,10 +56,10 @@ export function Accueil_vitr({ active, setActive }){
                     </div>
                 </div>
                 
-                <div className=' absolute w-[60%] bg-gray-50 text-center left-[25%] h-[20%] rounded-xl bg-cover bg-no-repeat bg-center' style={{ backgroundImage: `url(${img_pub})` }}>
+                <div className=' absolute w-[60%] bg-gray-50 text-center left-[25%] h-[20%] rounded-xl bg-cover bg-no-repeat bg-center' style={{ backgroundImage: `url(${img_banniere})` }}>
                 </div>
                 <div className=' flex relative '></div>
-                <h1 className=' flex absolute left-[35%] top-[32%] text-xl font-semibold font-serif'>{"Suggestions pour vous".toUpperCase()}   </h1>
+                <h1 className=' flex absolute left-[35%] top-[30%] text-xl font-semibold font-serif'>{"Suggestions pour vous".toUpperCase()}   </h1>
                 <Carousel />
 
                 <div>
@@ -109,7 +109,7 @@ export function Accueil_vitr({ active, setActive }){
                                     </p>
                                 </td>   
                             </tr>
-
+                            
                             <tr >
                                 <td className='p-2 border-b-1 border-gray-100'>
                                     <p>

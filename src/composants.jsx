@@ -36,21 +36,7 @@ import gestion_Comptes from './img/gestion_Comptes.webp';
     src : gestion_Comptes,
     name : "Gestion des comptes",
     nom : "comptes",
-    nbre : 3},
-
-    {
-    id : 5,
-    src : gestion_commande,
-    name : "Gestion des commandes",
-    nom : "commandes",
-    nbre : 3}, 
-
-    {id : 6,
-    src : gestion_produits,
-    name : "Gestion des produits",
-    nom : "produits",
     nbre : 3}
-
   ]
 export function Nav_bar() {
        return(<>
