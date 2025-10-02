@@ -9,7 +9,7 @@ export function Accueil_vitr({ active, setActive }){
         return(
       <>
       <Nav_bar_with_searchbar_vitrine active={active} setActive={setActive}/>
-            <div className='container mx-auto bg-white min-h-screen flex relative pt-20'>
+            <div className='mx-auto bg-white min-h-screen flex relative pt-20'>
 
                 <div className='absolute bg-gray-50 w-[20%] h-[50%] rounded-xl left-5 top-[25%] shadow-xl p-4 pt-10'>
                     <h2 className="text-lg font-bold mb-4 border-b pb-2 text-center">Filtres</h2>

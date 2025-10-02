@@ -40,8 +40,8 @@ import gestion_Comptes from './img/gestion_Comptes.webp';
   ]
 export function Nav_bar() {
        return(<>
-       <header className=" rounded-2xl container fixed left-1/2 -translate-x-1/2 bg-green-700 top-5 px-5">
-            <div className='container mx-auto flex justify-between items-center py-2'>
+       <header className=" rounded-2xl min-w-screen px-10 fixed left-1/2 -translate-x-1/2 bg-green-700 top-5 ">
+            <div className='min-w-screen px-10 mx-auto flex justify-between items-center py-2'>
                <nav>
                  <img src={logo} alt="Logo" className="h-12 w-auto" />
                </nav>
@@ -65,8 +65,8 @@ export function Nav_bar() {
 
     export function Nav_bar_with_searchbar() {
        return(<>
-       <header className=" rounded-2xl container fixed left-1/2 -translate-x-1/2 bg-green-700 top-0 px-5 z-10">
-            <div className='container flex md:justify-between items-center justify-between py-2 mx-auto'>
+       <header className=" rounded-2xl min-w-screen px-10 fixed left-1/2 -translate-x-1/2 bg-green-700 top-0  z-10">
+            <div className='min-w-screen px-10 flex md:justify-between items-center justify-between py-2 mx-auto'>
               <button className="block sm:hidden p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" 
                     className="w-7 h-7 text-white" 
@@ -106,11 +106,9 @@ export function Nav_bar() {
         setActive(e.currentTarget.textContent)
         console.log(active)
       }
-      if (active === "ACCUEIL"){ }
-
        return(<>
-       <header className=" rounded-2xl container fixed left-1/2 -translate-x-1/2 bg-green-700 top-0 px-5 z-10">
-            <div className='container flex md:justify-between items-center justify-between py-2 mx-auto'>
+       <header className=" rounded-2xl min-w-screen px-10 fixed left-1/2 -translate-x-1/2 bg-green-700 top-0  z-10">
+            <div className='min-w-screen px-10 flex md:justify-between items-center justify-between py-2 mx-auto'>
               <button className="block sm:hidden p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" 
                     className="w-7 h-7 text-white" 
@@ -130,6 +128,7 @@ export function Nav_bar() {
                    <li onClick={handleActive} className= {` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "PRODUITS" ? "text-red-500 underline underline-offset-2 " : "text-white"}`} >PRODUITS</li>
 
                    <li onClick={handleActive} className= {` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "MES COMMANDES" ? "text-red-500 underline underline-offset-2 " : "text-white"}`} >MES COMMANDES</li>
+                   <li onClick={handleActive} className= {` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "COMMANDES PERSONNALISEES" ? "text-red-500 underline underline-offset-2 " : "text-white"}`} >COMMANDES PERSONNALISEES</li>
                  </ul>
                  {/*searchbar*/}
                  <input type="text" placeholder="Rechercher" className="ml-5 rounded-md border-1 px-4 py-1 text-center my-[-5px] border-white text-white hidden md:flex"/>

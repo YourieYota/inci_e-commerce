@@ -1,0 +1,48 @@
+function FileUpload() {
+  const [file, setFile] = React.useState(null);
+
+  const handleChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  return (
+    <div className="flex flex-col space-y-2">
+      <label className="font-medium">Fichiers de Design (optionnel)</label>
+
+      <label
+        htmlFor="file-upload"
+        className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-40 cursor-pointer hover:bg-gray-50"
+      >
+        <svg
+          className="w-10 h-10 text-gray-400 mb-2"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
+        <span className="text-gray-600">
+          Cliquez pour télécharger ou glissez-déposez
+        </span>
+        <span className="text-xs text-gray-500">
+          PDF, AI, PSD, PNG, JPG (max. 50MB)
+        </span>
+        <input
+          id="file-upload"
+          type="file"
+          className="hidden"
+          onChange={handleChange}
+        />
+      </label>
+
+      {file && (
+        <p className="text-sm text-green-600">
+          ✅ Fichier sélectionné : {file.name}
+        </p>
+      )}
+    </div>
+  );
+}
+
+export default FileUpload;

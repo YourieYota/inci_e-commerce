@@ -29,7 +29,7 @@ function Back() {
           </div>
   
 
-      <footer className='container m-auto bg-green-700 rounded-2xl flex flex-col items-center justify-center text-white text-center p-4 md:p-6 mt-8'>
+      <footer className=' m-auto bg-green-700 rounded-2xl flex flex-col items-center justify-center text-white text-center p-4 md:p-6 mt-8'>
                <div className='flex flex-col items-center justify-center m-10'>
                   <p>Créée le 30 Juillet 1897 à Grand-Bassam, l'Imprimerie Nationale totalise plus d'un siècle d'activités graphiques au service de la nation. Elle est l'organe chargée à titre exclusif de la production des imprimés administratifs. L'État lui accorde le monopole à travers le décret n°76-493 du 24 juillet 1976.
                   Abidjan-Plateau, Angle Angoulvant et de l'Avenue Marchand - B.P.V 87 ABIDJAN Côte d'Ivoire
