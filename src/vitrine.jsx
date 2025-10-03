@@ -5,7 +5,7 @@ import { Custom_prod } from "./vitrine_composants/commandesPersonnalisee";
 import { Commande } from "./vitrine_composants/commande";
 
 function Vitrine() {
-  const [active, setActive] = useState("COMMANDES PERSONNALISEES");
+  const [active, setActive] = useState("ACCUEIL");
 
   return (
     <>

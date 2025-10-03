@@ -80,7 +80,7 @@ function Carousel() {
   };
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto left-[10%]">
+    <div className="relative w-full max-w-4xl mx-auto left-0">
       {/* Carousel wrapper */}
       <div className="relative h-56 md:h-80 overflow-hidden rounded-lg flex items-center justify-center top-[45%] left-[55%] -translate-x-1/2 -translate-y-1/2">
         {slides.map((group, index) => (

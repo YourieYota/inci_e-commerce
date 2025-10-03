@@ -4,6 +4,20 @@ import img_banniere from '../img/banniere_compressee.webp';
 import '../CSS.css';
 import Carousel from '../carousel';
 
+export const Tab_com = [
+    {
+        TypeDeProduits : "dépliants",
+        DateDebProd : "12/08/2025",
+        DateFinProd : "19/08/2025",
+        Statut : "Terminé"
+    },
+    {
+        TypeDeProduits : "carte",
+        DateDebProd : "19/09/2025",
+        DateFinProd : "27/09/2025",
+        Statut : "en cours"
+    }
+]
 
 export function Accueil_vitr({ active, setActive }){
         return(
@@ -65,7 +79,7 @@ export function Accueil_vitr({ active, setActive }){
                 <div>
                     <h1 className=' flex absolute top-[67%] left-[35%] text-xl font-semibold font-serif'>{"Suivi des commandes".toUpperCase()}</h1>
                     <table className='border-1 absolute right-0 top-[72%] left-[25%] shadow-2xl border-gray-200'>
-                        <caption className='text-left font-gideonRoman font-semibold'>
+                        <caption className='text-left font-semibold'>
                             Commandes
                         </caption>
                         <thead>
@@ -79,63 +93,36 @@ export function Accueil_vitr({ active, setActive }){
                                 <th className=' border-gray-200 p-2 w-75 text-left'>
                                     <p>Date de fin de production</p>
                                 </th>
-                                <th className=' border-gray-200 p-2 w-25 text-left'>
+                                <th className=' border-gray-200 p-2 w-75 text-left'>
                                     <p>Statut</p>
                                 </th>
                             </tr>
                         </thead>
 
                         <tbody>
+                            {Tab_com.map((item, index)=>(
+                                <tr key={index}>
+                                    <td className='p-2 border-b-1 border-gray-100'>
+                                        {item.TypeDeProduits}
+                                    </td>
+                                    <td className='p-2 border-b-1 border-gray-100'>
+                                        {item.DateDebProd}
+                                    </td>
+                                    <td className='p-2 border-b-1 border-gray-100'>
+                                        {item.DateFinProd}
+                                    </td>
+                                    {item.Statut === "Terminé" ? <td className='p-2 border-b-1 border-gray-100 text-green-500'>
+                                        {item.Statut}</td> : <td className='p-2 border-b-1 border-gray-100 text-red-500'> {item.Statut} </td>}
+                                </tr>
 
-                            <tr className='p-5'>
-                                <td className='p-2 border-b-1 border-gray-100'>
-                                    <p>
-                                        dépliants
-                                    </p>
-                                </td>
-                                <td className='p-2 border-b-1 border-gray-100'>
-                                    <p>
-                                        12/08/2025
-                                    </p>
-                                </td>
-                                <td className='p-2 border-b-1 border-gray-100'>
-                                    <p>
-                                        19/08/2025
-                                    </p>
-                                </td>
-                                <td className='p-2 border-b-1 border-gray-100 text-green-600'>
-                                    <p>
-                                        Terminé
-                                    </p>
-                                </td>   
-                            </tr>
-                            
-                            <tr >
-                                <td className='p-2 border-b-1 border-gray-100'>
-                                    <p>
-                                        carte
-                                    </p>
-                                </td>
-                                <td className='p-2 border-b-1 border-gray-100'>
-                                    <p>
-                                        19/09/2025
-                                    </p>
-                                </td>
-                                <td className='p-2 border-b-1 border-gray-100'>
-                                    <p>
-                                        27/09/2025
-                                    </p>
-                                </td>
-                                <td className='p-2 border-b-1 border-gray-100 text-red-500'>
-                                    <p>
-                                        en cours
-                                    </p>
-                                </td>   
-                            </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
                 </div>
+                
+
+
                 
       </>)
     }
