@@ -249,7 +249,10 @@ const handleSubmit = (e) => {
 }
 
 function CommandesPersonnalisees(){
-
+    const [active, setActive] = useState("COMMANDES PERSONNALISEES");
+    return(
+        <Custom_prod active={active} setActive={setActive}/>
+    )
 }
 
 export default CommandesPersonnalisees;

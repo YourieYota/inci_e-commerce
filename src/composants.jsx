@@ -124,11 +124,11 @@ export function Nav_bar() {
                </nav>
                <nav className="flex flex-row mx-auto">
                  <ul className=' space-x-6 flex-row hidden md:flex'>
-                   <li onClick= {handleActive} className={ ` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "ACCUEIL" ? "text-red-500 underline underline-offset-2 " : "text-white"}`}>ACCUEIL</li>
-                   <li onClick={handleActive} className= {` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "PRODUITS" ? "text-red-500 underline underline-offset-2 " : "text-white"}`} >PRODUITS</li>
+                   <Link to={"/accueil_vitr"}><li onClick= {handleActive} className={ ` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "ACCUEIL" ? "text-red-500 underline underline-offset-2 " : "text-white"}`}>ACCUEIL</li></Link>
+                   <Link to={"/produits_vitrine"}><li onClick={handleActive} className= {` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "PRODUITS" ? "text-red-500 underline underline-offset-2 " : "text-white"}`} >PRODUITS</li></Link>
 
-                   <li onClick={handleActive} className= {` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "MES COMMANDES" ? "text-red-500 underline underline-offset-2 " : "text-white"}`} >MES COMMANDES</li>
-                   <li onClick={handleActive} className= {` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "COMMANDES PERSONNALISEES" ? "text-red-500 underline underline-offset-2 " : "text-white"}`} >COMMANDES PERSONNALISEES</li>
+                   <Link to={"/commande"}><li onClick={handleActive} className= {` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "MES COMMANDES" ? "text-red-500 underline underline-offset-2 " : "text-white"}`} >MES COMMANDES</li></Link>
+                   <Link to={"/commandesPersonnalisee"}><li onClick={handleActive} className= {` hover:text-blue-600 hover:font-serif cursor-pointer font-medium ${active === "COMMANDES PERSONNALISEES" ? "text-red-500 underline underline-offset-2 " : "text-white"}`} >COMMANDES PERSONNALISEES</li></Link>
                  </ul>
                  {/*searchbar*/}
                  <input type="text" placeholder="Rechercher" className="ml-5 rounded-md border-1 px-4 py-1 text-center my-[-5px] border-white text-white hidden md:flex"/>

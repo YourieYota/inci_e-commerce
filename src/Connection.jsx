@@ -23,7 +23,6 @@ const naviguate = useNavigate()
   function handleLogin(e){
     e.preventDefault()
     setLogin(e.target.value)
-    console.log(login)
   }
   function handlePassword(e) {
     e.preventDefault()
@@ -36,12 +35,16 @@ function handleSubmit(e){
   if (!login || !password) {
     setError("Veuillez remplir tous les champs.")
     return
-  }else if (login != "yourie" || password != "test"){
+  }else if (login != "yourie" ||(password != "yota" && password != "test")){
     setError("Login ou mot de passe incorrect")
     return
   }
   setError("")
-  naviguate('/back-office')
+  if(password === "yota"){
+    naviguate("/vitrine")
+  }else{
+     naviguate('/back-office')
+  }
 }
   return (
       

@@ -127,6 +127,9 @@ export function Accueil_vitr({ active, setActive }){
       </>)
     }
 function Accueil_vitrine(){
-    
+    const [active, setActive] = useState("ACCUEIL");
+    return(
+        <Accueil_vitr active={active} setActive={setActive}/>
+    )
 }
 export default Accueil_vitrine;
