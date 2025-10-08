@@ -6,12 +6,14 @@ import Carousel from '../carousel';
 
 export const Tab_com = [
     {
+        typeDeCommande : "spéciale",
         TypeDeProduits : "dépliants",
         DateDebProd : "12/08/2025",
         DateFinProd : "19/08/2025",
         Statut : "Terminé"
     },
     {
+        typeDeCommande : "ordinaire",
         TypeDeProduits : "carte",
         DateDebProd : "19/09/2025",
         DateFinProd : "27/09/2025",
@@ -77,13 +79,14 @@ export function Accueil_vitr({ active, setActive }){
                 <Carousel />
 
                 <div>
-                    <h1 className=' flex absolute top-[67%] left-[35%] text-xl font-semibold font-serif'>{"Suivi des commandes".toUpperCase()}</h1>
+                    <h1 className=' flex absolute top-[68%] left-[25%] text-xl font-semibold font-serif'>{"Suivi des commandes".toUpperCase()}</h1>
                     <table className='border-1 absolute right-0 top-[72%] left-[25%] shadow-2xl border-gray-200'>
-                        <caption className='text-left font-semibold'>
-                            Commandes
-                        </caption>
+
                         <thead>
                         <tr className='w-[60%]  border-gray-200'>
+                            <th className=' border-gray-200 p-2 w-75 text-left'>
+                                    <p>Type de Commandes</p>
+                                </th>
                                 <th className=' border-gray-200 p-2 w-75 text-left'>
                                     <p>Type de produits</p>
                                 </th>
@@ -93,7 +96,7 @@ export function Accueil_vitr({ active, setActive }){
                                 <th className=' border-gray-200 p-2 w-75 text-left'>
                                     <p>Date de fin de production</p>
                                 </th>
-                                <th className=' border-gray-200 p-2 w-75 text-left'>
+                                <th className=' border-gray-200 p-2 w-50 text-left'>
                                     <p>Statut</p>
                                 </th>
                             </tr>
@@ -102,6 +105,9 @@ export function Accueil_vitr({ active, setActive }){
                         <tbody>
                             {Tab_com.map((item, index)=>(
                                 <tr key={index}>
+                                    <td className='p-2 border-b-1 border-gray-100'>
+                                        {item.typeDeCommande}
+                                    </td>
                                     <td className='p-2 border-b-1 border-gray-100'>
                                         {item.TypeDeProduits}
                                     </td>

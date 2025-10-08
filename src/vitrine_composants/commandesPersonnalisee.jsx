@@ -57,11 +57,13 @@ const handleSubmit = (e) => {
   let statut =  date <= dateFin ? "en cours" : "terminé"
 
   Tab_com.push({
+    typeDeCommande : "spéciale",
     TypeDeProduits : typeprod,
     DateDebProd : fulldate,
     DateFinProd : fulldatefin,
     Statut : statut
-  })
+  })  
+  alert("commande ajoutée avec succès")
 }
    const [file, setFile] = React.useState(null)
    const handleChange = (e) => {

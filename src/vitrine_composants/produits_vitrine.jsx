@@ -9,6 +9,7 @@ import carte_pro from "../img/produits/carte_pro.webp"
 import flyer from "../img/produits/flyer.webp"
 import { Tab_com } from "./acuueil_vitr";
 import { Link } from "react-router-dom";
+import { Filtrer } from "./commande";
 
 export function Produits_vitr({ active, setActive }){
 
@@ -78,13 +79,16 @@ const handleAddCom = (e)=>{
 
 
     Tab_com.push(
-      {TypeDeProduits : prodNom ,
+      {typeDeCommande : "ordinaire",
+        TypeDeProduits : prodNom ,
         DateDebProd : dateFormat,
         DateFinProd : dateFuturFormat,
         Statut : statut
       }
     )
 
+    alert("commande ajoutée avec succès")
+    setAfficheDiv((prev)=>!prev)
 }
         return(
       <>
@@ -110,7 +114,7 @@ const handleAddCom = (e)=>{
               </div>
       </div>
         </section>
-
+          <Filtrer/>
         <section ref={produitsRef} className="bg-white pt-25 px-50 ">
             <div>
               <h1 className="text-5xl mb-5 font-bold">
@@ -152,7 +156,7 @@ const handleAddCom = (e)=>{
                 
                 
             </div>
-            <div className={`top-1/5 right-1/3 fixed w-110 h-120 border-1 border-gray-200 rounded-xl bg-gray-100 shadow-2xl
+            <div className={`top-1/3 left-1/3 fixed w-110 h-120 border-1 border-gray-200 rounded-xl bg-gray-100 shadow-2xl
               ${affichDiv ? "opacity-100" : "opacity-0 pointer-events-none"}
               `}>
                 <span className="border-1 rounded-full absolute top-0 bg-red-600 border-black text-white pb-1 right-0 px-3 hover:cursor-pointer" onClick={handleCom}>x</span>
