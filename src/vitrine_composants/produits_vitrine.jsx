@@ -1,4 +1,5 @@
 import React, { useState, useRef  } from "react";
+import { useCommande } from "./hook_personnalise";
 import  {Nav_bar, Nav_bar_with_searchbar, Nav_bar_with_searchbar_vitrine}  from '../composants';
 import '../CSS.css';
 import carte_visite from "../img/produits/carte_de_visite.webp"
@@ -11,8 +12,9 @@ import { Tab_com } from "./acuueil_vitr";
 import { Link } from "react-router-dom";
 import { Filtrer } from "./commande";
 
-export function Produits_vitr({ active, setActive }){
 
+export function Produits_vitr({ active, setActive }){
+  const [commande_tab, setCommande_tab] = useCommande();
   const tab_prod =[
     {
       src : carte_visite,
@@ -53,41 +55,54 @@ export function Produits_vitr({ active, setActive }){
     }
   ]
   const produitsRef = useRef(null)
-  const [affichDiv, setAfficheDiv] = useState(false)
-  const [prodNom, setProdNom] = useState(null)
+  const [affichDiv, setAfficheDiv] = useState(true)
+  const [prod, setProd] = useState({})
 
+  const [infos, setInfos] = useState({})
   const handleCom = (e, produit)=>{
+
     e.preventDefault()
     setAfficheDiv((prev)=>!prev)
-    setProdNom(produit || null)
+    setProd(produit)
+}
 
+const handlleChange = (e)=>{
+  e.preventDefault()
+  const {name, value} = e.target
+  setProd((prev)=> ({...prev, [name] : value}))
+}
+const handleClose = (e)=>{
+  e.preventDefault()
+  setAfficheDiv((prev)=>!prev)
 }
 const handleScrollTo = (e)=>{
   produitsRef.current?.scrollIntoView({ behavior: "smooth" })
 }
 
-const handleAddCom = (e)=>{
-  e.preventDefault()
-    const date = new Date()
-    const dateFormat = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`
-
-    const dateFutur = new Date(date)
-    dateFutur.setDate(date.getDate() + 7)
-    const dateFuturFormat = `${dateFutur.getDate()}/${dateFutur.getMonth()}/${dateFutur.getFullYear()}`
-
-    let statut = date < dateFutur ? "en cours" : "terminé"
-
-
-    Tab_com.push(
-      {typeDeCommande : "ordinaire",
-        TypeDeProduits : prodNom ,
-        DateDebProd : dateFormat,
-        DateFinProd : dateFuturFormat,
-        Statut : statut
-      }
-    )
-
+const handleAddCom = (e, produit)=>{
+   e.preventDefault()
+    const date  = new Date()
+    const fulldate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+    const dateFin = new Date(date)
+    dateFin.setDate(date.getDate() + 7)
+    const fulldatefin = `${dateFin.getFullYear()}-${dateFin.getMonth()+1}-${dateFin.getDate()}`
+    let statut =  date <= dateFin ? "en cours" : "terminé"
+    console.log(produit)
+    
+  
+    Tab_com.push({
+      typeDeCommande : "ordinaire",
+      TypeDeProduits : produit.nom,
+      DateDebProd : fulldate,
+      DateFinProd : fulldatefin,
+      Statut : statut
+    })  
+    const newCommande = {
+      
+    }
     alert("commande ajoutée avec succès")
+    setCommande_tab(prev => [...prev, newCommande]);
+
     setAfficheDiv((prev)=>!prev)
 }
         return(
@@ -143,7 +158,7 @@ const handleAddCom = (e)=>{
                           <p className="text-xl font-bold">
                           {index.prix}
                         </p>
-                        <button className="flex border-1 rounded-xl p-2 bg-black text-white hover:cursor-pointer hover:opacity-80" onClick={(e)=>handleCom(e, index.nom)}>
+                        <button className="flex border-1 rounded-xl p-2 bg-black text-white hover:cursor-pointer hover:opacity-80" onClick={(e)=>handleCom(e, index)}>
                           Ajouter au panier
                         </button>
                         </div>
@@ -156,51 +171,53 @@ const handleAddCom = (e)=>{
                 
                 
             </div>
-            <div className={`top-1/3 left-1/3 fixed w-110 h-120 border-1 border-gray-200 rounded-xl bg-gray-100 shadow-2xl
+            <div className={`top-1/2 -translate-x-1/2 -translate-y-1/2 left-1/2 fixed w-2/4 h-screen md:h-3/5  border-1 border-gray-200 rounded-xl bg-gray-100 shadow-2xl
               ${affichDiv ? "opacity-100" : "opacity-0 pointer-events-none"}
               `}>
-                <span className="border-1 rounded-full absolute top-0 bg-red-600 border-black text-white pb-1 right-0 px-3 hover:cursor-pointer" onClick={handleCom}>x</span>
+                <span className="border-1 rounded-full absolute top-0 bg-red-600 border-black text-white pb-1 right-0 px-3 hover:cursor-pointer" onClick={handleClose}>x</span>
                 <div className="text-center pt-6 px-2 font-bold text-xl pb-2">
                   Valider votre commande 
                 </div>
                 <div className="">
                   <form action="">
-                      <div className="grid grid-cols-2 space-y-2 gap-4 p-4">
-                        <div>
-                        <label htmlFor="">
-                          Nom
+                      <div className="grid grid-cols-1 md:grid-cols-2 space-y-2 gap-4 p-4">
+                        <div className="flex-col flex">
+                        <label htmlFor="catprod">
+                          Catégorie de la commande
                         </label>
-                        <input type="text" className="rounded-lg p-2 border-1" />
+                        <input name="catprod" type="text" className="rounded-lg p-2 border-1 bg-gray-200 pointer-events-none:" value={"Ordinaire"} disabled/>
                         </div>
 
-                        <div>
+                        <div className="flex-col flex">
                           <label htmlFor="">
-                          Produit
+                          Type de Produit
                         </label>
-                        <input type="text" className="rounded-lg p-2 border-1 bg-gray-300" disabled placeholder={prodNom} value={prodNom || ""} />
+                        <input type="text" className="rounded-lg p-2 border-1 bg-gray-300" disabled placeholder={prod.nom} value={prod.nom || ""} />
                         </div>
                       </div>
+
+                      
                       <div className="flex flex-col px-2 space-y-1 pb-5">
-                        <label htmlFor="">
+                        <label htmlFor="qte">
                           Quantité
                         </label>
-                        <input type="number" className="rounded-lg p-2 mx-1 border-1" placeholder="100"/>
+                        <input id="qte" type="number" className="rounded-lg p-2 mx-1 border-1" placeholder="100" value={""} onChange={handlleChange}/>
                       </div>
 
                        <div className="flex flex-col px-2 space-y-1 pb-5">
-                        <label htmlFor="">
+                        <label htmlFor="desc">
                           Description
                         </label>
-                        <textarea name="" id="" className="h-25 border-1 rounded-lg">
-                        </textarea>
+                        <textarea id="desc" className="h-50 border-1 rounded-lg p-2"/>
+                        
                       </div>
 
                       <div className="flex flex-row px-2 justify-between ">
-                        <button className="bg-white hover:bg-red-600 rounded-lg p-2 px-8 border-1 border-gray-500" onClick={handleCom}>
+                        <button className="bg-white hover:bg-red-600 rounded-lg p-2 px-8 border-1 border-gray-500" onClick={handleClose}>
                           Annuler
                         </button>
 
-                        <button className="bg-green-600 rounded-lg p-2 px-8 border-1 border-gray-500 hover:bg-green-700" onClick={handleAddCom}>
+                        <button className="bg-green-600 rounded-lg p-2 px-8 border-1 border-gray-500 hover:bg-green-700" onClick={(e)=>handleAddCom(e, prod)}>
                           Ajouter au panier
                         </button>
 
