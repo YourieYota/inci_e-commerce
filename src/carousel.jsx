@@ -62,7 +62,7 @@ const chunkArray = ((arr, size)=>
 function Carousel() {
   const [current, setCurrent] = useState(0);
 
-  const slides = chunkArray(images, 3); // chaque slide = 3 images
+  const slides = chunkArray(images, 4); // chaque slide = 3 images
 
   useEffect(() => {
     const interval = setInterval(()=>{
@@ -76,17 +76,17 @@ function Carousel() {
   };
 
   const nextSlide = () => {
-    setCurrent((current + 1) % slides.length);
+    setCurrent((current + 1 ) % slides.length);
   };
 
   return (
     <div className="relative w-full max-w-4xl mx-auto left-0">
       {/* Carousel wrapper */}
-      <div className="relative h-56 md:h-80 overflow-hidden rounded-lg flex items-center justify-center top-[45%] left-[55%] -translate-x-1/2 -translate-y-1/2">
+      <div className="relative h-56 md:h-80 overflow-hidden rounded-lg flex items-center justify-center top-[55%] left-[55%] -translate-x-1/2 -translate-y-1/2">
         {slides.map((group, index) => (
           <div
             key={index}
-            className={`absolute inset-0 grid grid-cols-3 gap-2 cursor-pointer px-4 transition-opacity duration-700 ${
+            className={`absolute inset-0 grid grid-cols-4 gap-2 cursor-pointer px-4 transition-opacity duration-700 ${
               index === current ? "opacity-100" : "opacity-0"
             }`}
           >
@@ -113,7 +113,7 @@ function Carousel() {
       </div>
 
       {/* Indicators */}
-      <div className="absolute bottom-[40%] left-1/2 -translate-x-1/2 flex space-x-2">
+      <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 flex space-x-2">
         {slides.map((_, index) => (
           <button
             key={index}
@@ -122,19 +122,20 @@ function Carousel() {
               index === current ? "bg-blue-500" : "bg-gray-300"
             }`}
           />
+          
         ))}
       </div>
-
+          
       {/* Controls */}
       <button
         onClick={prevSlide}
-        className="absolute top-[45%] left-[10%] -translate-y-1/2 bg-black/40 text-white px-3 py-2 rounded-full hover:bg-black/60"
+        className="absolute top-[55%] left-[10%] -translate-y-1/2 bg-black/40 text-white px-3 py-2 rounded-full hover:bg-black/60"
       >
         {"<"}
       </button>
       <button
         onClick={nextSlide}
-        className="absolute top-[45%] right-0 -translate-y-1/2 bg-black/40 text-white px-3 py-2 rounded-full hover:bg-black/60"
+        className="absolute top-[55%] right-0 -translate-y-1/2 bg-black/40 text-white px-3 py-2 rounded-full hover:bg-black/60"
       >
         {">"}
       </button>

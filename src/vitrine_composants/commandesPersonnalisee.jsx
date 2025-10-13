@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import  {Nav_bar, Nav_bar_with_searchbar, Nav_bar_with_searchbar_vitrine}  from '../composants';
 import '../CSS.css';
-import { Tab_com } from '../vitrine_composants/acuueil_vitr';
+import { useCommande } from "./hook_personnalise";
 
-  
+
 const cat_prod = [
   {
     nom : "dépliants",
@@ -39,13 +39,26 @@ const cat_prod = [
 
 export function Custom_prod({active, setActive}){
 
+  const [commande_tab, setCommande_tab]= useCommande()
+
   const [typeprod, setTypeprod] = useState("")
 const [date_now, setDate_now] = useState("")
 
-const handleChangeTypeProd = (e) => {
-  setTypeprod(e.target.value)
 
-}
+const [infos, setInfos] = useState({idCom :"",
+            nomComp :"",
+            email : "",
+            tel :"",
+            entreprise :"",
+            typeProd: "",
+            catCom: "Spéciale",
+            qte: "",
+            caract: "",
+            date: "",
+            DateFinProd : "",
+            statut: "",
+            image : ""
+          })
 
 const handleSubmit = (e) => {
   e.preventDefault()
@@ -54,21 +67,29 @@ const handleSubmit = (e) => {
   const dateFin = new Date(date)
   dateFin.setDate(date.getDate() + 7)
   const fulldatefin = `${dateFin.getFullYear()}-${dateFin.getMonth()+1}-${dateFin.getDate()}`
-  let statut =  date <= dateFin ? "en cours" : "terminé"
+  let statut =  date <= dateFin ? "en attente" : "terminé"
+  const idcom = typeprod.slice(0, 2).toUpperCase() + date.getDate().toString().padStart(2, 0) + date.getMonth().toString().padStart(2, 0) + date.getFullYear().toString().padStart(2, 0)
 
-  Tab_com.push({
-    typeDeCommande : "spéciale",
-    TypeDeProduits : typeprod,
-    DateDebProd : fulldate,
+  const newCommande = {
+    ...infos,
+    idCom : idcom,
+    date : fulldate,
     DateFinProd : fulldatefin,
-    Statut : statut
-  })  
-  alert("commande ajoutée avec succès")
-}
-   const [file, setFile] = React.useState(null)
-   const handleChange = (e) => {
-    setFile(e.target.files[0]);
+    statut,
+    image : file,
+    typeProd : typeprod
   }
+  setCommande_tab((prev)=>[...prev, newCommande])
+   alert("commande ajoutée avec succès")
+}
+
+  const handleChange = (e)=>{
+    const {name, value} = e.target
+    name === "image" ? setFile(e.target.files[0]) : name === "typeProd" ? setTypeprod(e.target.value) : setInfos({...infos, [name]: value})
+  }
+
+   const [file, setFile] = useState(null)
+
     return (
         <>
     <Nav_bar_with_searchbar_vitrine active={active} setActive={setActive}/>
@@ -102,39 +123,39 @@ const handleSubmit = (e) => {
                   <form action="" className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="grid grid-rows-2 space-y-2 h-20">
-                        <label htmlFor="">
+                        <label htmlFor="nomComp">
                         Nom Complet *
                       </label>  
-                      <input type="text" className="border-1 rounded-lg px-4" placeholder="Koffi jean"/>
+                      <input id="nomComp" name="nomComp" type="text" className="border-1 rounded-lg px-4" placeholder="Koffi jean" value={infos.nomComp} onChange={handleChange}/>
                       </div>
                       <div className="grid grid-rows-2 space-y-2 h-20">
-                        <label htmlFor="">
+                        <label htmlFor="email">
                         Email *
                       </label>
-                      <input type="text" className="border-1 rounded-lg px-4" placeholder="jean@email.com"/>
+                      <input id="email" name="email" type="text" className="border-1 rounded-lg px-4" placeholder="jean@email.com" value={infos.email} onChange={handleChange}/>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="grid grid-rows-2 space-y-2 h-20">
-                        <label htmlFor="">
+                        <label htmlFor="tel">
                         Téléphone *
                       </label>  
-                      <input type="text" className="border-1 rounded-lg px-4" placeholder="0101010101"/>
+                      <input value={infos.tel} id="tel" name="tel" type="text" className="border-1 rounded-lg px-4" placeholder="0101010101" onChange={handleChange}/>
                       </div>
                       <div className="grid grid-rows-2 space-y-2 h-20">
-                        <label htmlFor="">
+                        <label htmlFor="entreprise">
                         Entreprise *
                       </label>
-                      <input type="text" className="border-1 rounded-lg px-4 " placeholder="sp bouaké"/>
+                      <input type="text" id="entreprise" name="entreprise" className="border-1 rounded-lg px-4 " placeholder="sp bouaké" value={infos.entreprise} onChange={handleChange}/>
                       </div>
                     </div>
 
                     <div className="flex flex-col space-y-2">
-                        <label htmlFor="">
+                        <label htmlFor="typeProd">
                         Type d'impression *
                       </label>  
-                      <select name="" id="" className="border-1 w-80 h-10 rounded-lg" onChange={handleChangeTypeProd}>
+                      <select name="typeProd" id="typeProd" className="border-1 w-80 h-10 rounded-lg" onChange={handleChange} value={infos.typeProd}>
                           {cat_prod.map((index, id)=>{
                           return <option value={index.valeur} key={id}>
                             {index.nom}
@@ -144,21 +165,21 @@ const handleSubmit = (e) => {
 
                       </div>
                       <div className="flex flex-col space-y-2 py-2">
-                        <label htmlFor="">
+                        <label htmlFor="qte">
                         Quantité Estimée *
                       </label>
-                      <input type="number" className="border-1 rounded-lg px-4 py-2" placeholder="100"/>
+                      <input value={infos.qte} id="qte" name="qte" type="number" className="border-1 rounded-lg px-4 py-2" placeholder="100" onChange={handleChange}/>
                       </div>
 
                       <div className="flex flex-col space-y-2 ">
-                        <label htmlFor="">
+                        <label htmlFor="caract">
                           Description du projet *
                         </label>
-                      <textarea className="border-1 rounded-lg px-4 h-32 py-2" placeholder="décrivez votre projet en detail : Dimensions, Couleurs, Finitions souhaitées, délais..."/>
+                      <textarea value={infos.caract} name="caract" id="caract" className="border-1 rounded-lg px-4 h-32 py-2" placeholder="décrivez votre projet en detail : Dimensions, Couleurs, Finitions souhaitées, délais..." onChange={handleChange}/>
                       </div>
                      
                      <div className="flex flex-col space-y-2">
-                        <label htmlFor="">
+                        <label htmlFor="image">
                         Fichier de Design (Optionnel) *
                       </label>
                       <div className="flex flex-col space-y-2">
@@ -182,10 +203,12 @@ const handleSubmit = (e) => {
           PDF, AI, PSD, PNG, JPG (max. 50MB)
         </span>
         <input
-          id="file-upload"
+        name="image"
+          id="image"
           type="file"
           className="hidden"
           onChange={handleChange}
+          value={infos.image}
         />
       </label>
     </div>

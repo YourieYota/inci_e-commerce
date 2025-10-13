@@ -107,7 +107,7 @@ export function Nav_bar() {
         console.log(active)
       }
        return(<>
-       <header className=" rounded-2xl min-w-screen px-10 fixed left-1/2 -translate-x-1/2 bg-green-700 top-0  z-10">
+       <header className=" rounded-2xl min-w-screen px-10 fixed z-20 left-1/2 -translate-x-1/2 bg-green-700 top-0">
             <div className='min-w-screen px-10 flex md:justify-between items-center justify-between py-2 mx-auto'>
               <button className="block sm:hidden p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" 
@@ -137,13 +137,14 @@ export function Nav_bar() {
                
 
                <nav className=" flex items-center ml-auto">
-                <button className="relative mx-5 cursor-pointer">
+                <Link to="/commande">
+                <button className="relative mx-6 mt-2 cursor-pointer">
                    <FaShoppingCart className="w-6 h-6 text-white cursor-pointer" />
             {/* Badge pour le nombre d'articles */}
-                    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">
+                    <span className="absolute -top-1/3 -right-3 bg-red-600 text-white text-xs rounded-full px-2">
                       3
                     </span>
-                  </button>
+                  </button></Link>
                  <Link to="/" >
                   <FaUser className="text-white cursor-pointer w-6 h-6" />
                  </Link>

@@ -1,4 +1,4 @@
-import React, { useState, useRef  } from "react";
+import React, { useState, useRef, useEffect  } from "react";
 import { useCommande } from "./hook_personnalise";
 import  {Nav_bar, Nav_bar_with_searchbar, Nav_bar_with_searchbar_vitrine}  from '../composants';
 import '../CSS.css';
@@ -8,7 +8,6 @@ import brochure from "../img/produits/brochure.webp"
 import affiche from "../img/produits/affiche.webp"
 import carte_pro from "../img/produits/carte_pro.webp"
 import flyer from "../img/produits/flyer.webp"
-import { Tab_com } from "./acuueil_vitr";
 import { Link } from "react-router-dom";
 import { Filtrer } from "./commande";
 
@@ -55,22 +54,42 @@ export function Produits_vitr({ active, setActive }){
     }
   ]
   const produitsRef = useRef(null)
-  const [affichDiv, setAfficheDiv] = useState(true)
+  const [affichDiv, setAfficheDiv] = useState(false)
   const [prod, setProd] = useState({})
 
-  const [infos, setInfos] = useState({})
   const handleCom = (e, produit)=>{
 
     e.preventDefault()
     setAfficheDiv((prev)=>!prev)
     setProd(produit)
+     setInfos({
+    typeProd: produit.nom,
+    catCom: "Ordinaire",
+    qte: "1",
+    caract: "",
+    date: "",
+    DateFinProd: "",
+  })
 }
 
-const handlleChange = (e)=>{
+const handleChange = (e)=>{
   e.preventDefault()
   const {name, value} = e.target
-  setProd((prev)=> ({...prev, [name] : value}))
+  setInfos((prev)=> ({...prev, [name] : value}))
 }
+const [infos, setInfos] = useState({idCom :"",
+            typeProd: "",
+            catCom: "",
+            qte: "",
+            caract: "",
+            date: "",
+            DateFinProd : "",
+            statut: ""})
+
+useEffect(()=>{
+  console.log(infos)
+},[infos])
+
 const handleClose = (e)=>{
   e.preventDefault()
   setAfficheDiv((prev)=>!prev)
@@ -88,23 +107,24 @@ const handleAddCom = (e, produit)=>{
     const fulldatefin = `${dateFin.getFullYear()}-${dateFin.getMonth()+1}-${dateFin.getDate()}`
     let statut =  date <= dateFin ? "en cours" : "terminé"
     console.log(produit)
-    
+    const idCom = produit.nom.slice(0, 2).toUpperCase() + date.getDate() + (date.getMonth()+1).toString().padStart(2, "0") + date.getFullYear().toString().padStart(2, "0")
+    console.log(idCom)  
   
-    Tab_com.push({
-      typeDeCommande : "ordinaire",
-      TypeDeProduits : produit.nom,
-      DateDebProd : fulldate,
-      DateFinProd : fulldatefin,
-      Statut : statut
-    })  
-    const newCommande = {
-      
-    }
+  const newCom = {
+    ...infos, 
+    idCom,
+    date : fulldate,
+    datefin : fulldatefin,
+    statut
+  }
+
+
     alert("commande ajoutée avec succès")
-    setCommande_tab(prev => [...prev, newCommande]);
+    setCommande_tab(prev => [...prev, newCom]);
 
     setAfficheDiv((prev)=>!prev)
 }
+
         return(
       <>
       <Nav_bar_with_searchbar_vitrine active={active} setActive={setActive}/>
@@ -185,14 +205,14 @@ const handleAddCom = (e, produit)=>{
                         <label htmlFor="catprod">
                           Catégorie de la commande
                         </label>
-                        <input name="catprod" type="text" className="rounded-lg p-2 border-1 bg-gray-200 pointer-events-none:" value={"Ordinaire"} disabled/>
+                        <input name="typeDeCommande" type="text" className="rounded-lg p-2 border-1 bg-gray-200 pointer-events-none:" value={"Ordinaire"} disabled/>
                         </div>
 
                         <div className="flex-col flex">
                           <label htmlFor="">
                           Type de Produit
                         </label>
-                        <input type="text" className="rounded-lg p-2 border-1 bg-gray-300" disabled placeholder={prod.nom} value={prod.nom || ""} />
+                        <input type="text" name="catCom" className="rounded-lg p-2 border-1 bg-gray-300" disabled placeholder={prod.nom} value={prod.nom || ""} />
                         </div>
                       </div>
 
@@ -201,14 +221,14 @@ const handleAddCom = (e, produit)=>{
                         <label htmlFor="qte">
                           Quantité
                         </label>
-                        <input id="qte" type="number" className="rounded-lg p-2 mx-1 border-1" placeholder="100" value={""} onChange={handlleChange}/>
+                        <input id="qte" name="qte" type="number" className="rounded-lg p-2 mx-1 border-1" placeholder="01" value={infos.qte} onChange={handleChange}/>
                       </div>
 
                        <div className="flex flex-col px-2 space-y-1 pb-5">
                         <label htmlFor="desc">
                           Description
                         </label>
-                        <textarea id="desc" className="h-50 border-1 rounded-lg p-2"/>
+                        <textarea id="desc" name="caract" className=" border-1 rounded-lg p-2" onChange={handleChange}/>
                         
                       </div>
 

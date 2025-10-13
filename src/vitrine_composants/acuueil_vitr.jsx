@@ -3,25 +3,13 @@ import  {Nav_bar, Nav_bar_with_searchbar, Nav_bar_with_searchbar_vitrine}  from 
 import img_banniere from '../img/banniere_compressee.webp';
 import '../CSS.css';
 import Carousel from '../carousel';
-
-export const Tab_com = [
-    {
-        typeDeCommande : "spéciale",
-        TypeDeProduits : "dépliants",
-        DateDebProd : "12/08/2025",
-        DateFinProd : "19/08/2025",
-        Statut : "Terminé"
-    },
-    {
-        typeDeCommande : "ordinaire",
-        TypeDeProduits : "carte",
-        DateDebProd : "19/09/2025",
-        DateFinProd : "27/09/2025",
-        Statut : "en cours"
-    }
-]
+import { useCommande } from "./hook_personnalise";
+import { Link } from "react-router-dom";
 
 export function Accueil_vitr({ active, setActive }){
+
+const [commande_tab, setCommande_tab] = useCommande();
+
         return(
       <>
       <Nav_bar_with_searchbar_vitrine active={active} setActive={setActive}/>
@@ -72,18 +60,17 @@ export function Accueil_vitr({ active, setActive }){
                     </div>
                 </div>
                 
-                <div className=' absolute w-[60%] bg-gray-50 text-center left-[25%] h-[20%] rounded-xl bg-cover bg-no-repeat bg-center' style={{ backgroundImage: `url(${img_banniere})` }}>
-                </div>
+                <Link to="/commandesPersonnalisee"><div><div className='absolute z-10 w-[60%] bg-gray-50 text-center left-[25%] h-[20%] rounded-xl bg-cover bg-no-repeat bg-center hover:cursor-pointer' style={{ backgroundImage: `url(${img_banniere})` }}>
+                </div></div></Link>
                 <div className=' flex relative '></div>
-                <h1 className=' flex absolute left-[35%] top-[30%] text-xl font-semibold font-serif'>{"Suggestions pour vous".toUpperCase()}   </h1>
+                <h1 className=' flex absolute left-1/2 -translate-x-1/2 top-[33%] text-xl font-semibold font-serif'>{"Suggestions pour vous".toUpperCase()}   </h1>
                 <Carousel />
 
-                <div>
-                    <h1 className=' flex absolute top-[68%] left-[25%] text-xl font-semibold font-serif'>{"Suivi des commandes".toUpperCase()}</h1>
-                    <table className='border-1 absolute right-0 top-[72%] left-[25%] shadow-2xl border-gray-200'>
-
+                <div className="flex flex-col absolute top-[87%] right-[15%] w-[70%]">
+                    <h1 className=' flex  text-xl font-semibold font-serif'>{"Suivi des commandes".toUpperCase()}</h1>
+                    <table className='border-1 w-full shadow-2xl border-gray-200'>
                         <thead>
-                        <tr className='w-[60%]  border-gray-200'>
+                        <tr className=' border-gray-200'>
                             <th className=' border-gray-200 p-2 w-75 text-left'>
                                     <p>Type de Commandes</p>
                                 </th>
@@ -103,22 +90,30 @@ export function Accueil_vitr({ active, setActive }){
                         </thead>
 
                         <tbody>
-                            {Tab_com.map((item, index)=>(
+
+                            {/*idCom: "CA08102501VI",
+            typeProd: "carte de visite",
+            catCom: "Commande spéciale",
+            qte: "50",
+            caract: "nom = koffi; \n prenom = jean-paul \n entreprise = mairie aboisso \n couleur = bleu et blanc \n autre texte = ravie de vous rencontrer \n autre spécificité = non",
+            date: "20/08/2025",
+            statut: "en cours"*/}
+                            {commande_tab.map((item, index)=>(
                                 <tr key={index}>
                                     <td className='p-2 border-b-1 border-gray-100'>
-                                        {item.typeDeCommande}
+                                        {item.catCom}
                                     </td>
                                     <td className='p-2 border-b-1 border-gray-100'>
-                                        {item.TypeDeProduits}
+                                        {item.typeProd}
                                     </td>
                                     <td className='p-2 border-b-1 border-gray-100'>
-                                        {item.DateDebProd}
+                                        {item.date}
                                     </td>
                                     <td className='p-2 border-b-1 border-gray-100'>
                                         {item.DateFinProd}
                                     </td>
-                                    {item.Statut === "Terminé" ? <td className='p-2 border-b-1 border-gray-100 text-green-500'>
-                                        {item.Statut}</td> : <td className='p-2 border-b-1 border-gray-100 text-red-500'> {item.Statut} </td>}
+                                    {item.statut === "terminé" ? <td className='p-2 border-b-1 border-gray-100 text-green-500'>
+                                        {item.statut}</td> : item.statut === "en cours" ? <td className='p-2 border-b-1 border-gray-100 text-yellow-500'> {item.statut} </td>:  <td className='p-2 border-b-1 border-gray-100 text-red-500'> {item.statut} </td>}
                                 </tr>
 
                             ))}
