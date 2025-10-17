@@ -9,6 +9,11 @@ import Accueil_vitrine from "./vitrine_composants/acuueil_vitr.jsx"
 import Commandes_user from "./vitrine_composants/commande.jsx"
 import CommandesPersonnalisees from "./vitrine_composants/commandesPersonnalisee.jsx"
 import Produit_vitrine from "./vitrine_composants/produits_vitrine.jsx"
+import Gest_client from "./back_office_composants/gestion_client.jsx"
+import Gest_com from "./back_office_composants/gestion_commandes.jsx"
+import Gest_compte from "./back_office_composants/gestion_comptes.jsx"
+import Gest_prod from "./back_office_composants/gestion_produits.jsx"
+
 
 function AppRouter() {
   return (
@@ -16,6 +21,7 @@ function AppRouter() {
       <Routes>
         {/*<Route path="/" element={<App />} />*/}
         <Route path="/" element={<Vitrine/>} />
+        <Route path='/Connection' element={<App/>}/>
         <Route path="/back-office" element={<Back />} />
         <Route path="/recup_password" element={<Recup_password />} />
         <Route path="/vitrine" element={<Vitrine/>} />
@@ -24,8 +30,11 @@ function AppRouter() {
         <Route path="commande" element={<Commandes_user/>}/>
         <Route path="commandesPersonnalisee" element={<CommandesPersonnalisees/>} />
         <Route path='produits_vitrine' element={<Produit_vitrine/>}/>
+        <Route path="/back_office_composants/gestion_clients" element={<Gest_client />} />
+        <Route path="/back_office_composants/gestion_commandes" element={<Gest_com />} />
+        <Route path="/back_office_composants/gestion_produits" element={<Gest_compte />} />
+        <Route path="/back_office_composants/gestion_comptes" element={<Gest_prod />} />
       </Routes>
-
     </BrowserRouter>
   );
 }

@@ -204,13 +204,19 @@ const handleModif = (e, id) => {
                         {infos?.statut !=="en attente" && 
                             <p className="text-red-600 "> Vous ne pouvez plus apporter de modification</p>
                         }
+                        <div className="flex justify-center items-center"></div>
                         <div className="flex flex-row justify-between" >
+                            
                             <button onClick={handleActive} className="border rounded-lg p-2 w-40 hover:bg-gray-100 cursor-pointer">
-                                Annuler
+                                Fermer
+                            </button>
+                            <button className="border rounded-lg p-2 min-w-40 px-10 hover:bg-gray-100 cursor-pointer">
+                            Annuler la commande
                             </button>
                             <button className="border rounded-lg p-2 w-40 hover:bg-gray-100 cursor-pointer disabled:bg-gray-300" disabled={infos?.statut !=="en attente" ? true : false} onClick={(e)=>handleModif(e, infos.idCom)}>
                                 Modifier
                             </button>
+                            
                         </div>
                     
                 </div>

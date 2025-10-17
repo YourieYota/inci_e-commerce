@@ -11,10 +11,7 @@ import flyer from "../img/produits/flyer.webp"
 import { Link } from "react-router-dom";
 import { Filtrer } from "./commande";
 
-
-export function Produits_vitr({ active, setActive }){
-  const [commande_tab, setCommande_tab] = useCommande();
-  const tab_prod =[
+export const tab_prod =[
     {
       src : carte_visite,
       nom : "carte de visite",
@@ -53,6 +50,9 @@ export function Produits_vitr({ active, setActive }){
       description : "petite description du modèle cité"
     }
   ]
+export function Produits_vitr({ active, setActive }){
+  const [commande_tab, setCommande_tab] = useCommande();
+  
   const produitsRef = useRef(null)
   const [affichDiv, setAfficheDiv] = useState(false)
   const [prod, setProd] = useState({})

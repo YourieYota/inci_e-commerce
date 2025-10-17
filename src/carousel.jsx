@@ -4,51 +4,8 @@ import gestion_clients from "./img/gestion_clients.webp";
 import gestion_commande from "./img/gestion_commandes.webp";
 import gestion_produits from "./img/gestion_produits.webp";
 import gestion_Comptes from "./img/gestion_Comptes.webp";
-
-const images = [
-  {
-    id: 1,
-    src: gestion_clients,
-    name: "Gestion des clients",
-    nom: "clients",
-    nbre: 3,
-  },
-  {
-    id: 2,
-    src: gestion_commande,
-    name: "Gestion des commandes",
-    nom: "commandes",
-    nbre: 3,
-  },
-  {
-    id: 3,
-    src: gestion_produits,
-    name: "Gestion des produits",
-    nom: "produits",
-    nbre: 3,
-  },
-  {
-    id: 4,
-    src: gestion_Comptes,
-    name: "Gestion des comptes",
-    nom: "comptes",
-    nbre: 3,
-  },
-  {
-    id: 5,
-    src: gestion_commande,
-    name: "Gestion des commandes",
-    nom: "commandes",
-    nbre: 3,
-  },
-  {
-    id: 6,
-    src: gestion_produits,
-    name: "Gestion des produits",
-    nom: "produits",
-    nbre: 3,
-  },
-]
+import { tab_prod } from "./vitrine_composants/produits_vitrine";
+const images = tab_prod
 
 // 👉 fonction pour regrouper les images 3 par 3
 const chunkArray = ((arr, size)=>
@@ -97,14 +54,14 @@ function Carousel() {
               >
                 <img
                   src={item.src}
-                  alt={item.name}
+                  alt={item.nom}
                   className="w-full h-32 object-contain rounded-md"
                 />
                 <h2 className="mt-2 text-lg font-semibold text-gray-800">
-                  {item.name}
+                  {item.nom}
                 </h2>
                 <p className="text-sm text-gray-500">
-                  Nombre de {item.nom} : {item.nbre}
+                  {item.prix}
                 </p>
               </div>
             ))}

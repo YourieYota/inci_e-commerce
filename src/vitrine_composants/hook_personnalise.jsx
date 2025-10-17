@@ -13,7 +13,7 @@ export function useCommande() {
 
 export function CommandeProvider({ children }) {
     const [commande_tab, setCommande_tab] = useState([
-        {idCom :"",
+        /*{idCom :"",
             nomComp :"",
             email : "",
             tel :"",
@@ -25,9 +25,9 @@ export function CommandeProvider({ children }) {
             date: "",
             DateFinProd : "",
             
-            image : ""},
+            image : ""},*/
         {
-             nomComp :"",
+            nomComp :"",
             email : "",
             tel :"",
             entreprise :"",

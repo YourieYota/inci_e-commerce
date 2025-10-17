@@ -65,14 +65,14 @@ export function Nav_bar() {
 
     export function Nav_bar_with_searchbar() {
        return(<>
-       <header className=" rounded-2xl min-w-screen px-10 fixed left-1/2 -translate-x-1/2 bg-green-700 top-0  z-10">
+       <header className="w-full px-10 fixed left-0 right-0 bg-green-700 top-0  z-10">
             <div className='min-w-screen px-10 flex md:justify-between items-center justify-between py-2 mx-auto'>
               <button className="block sm:hidden p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" 
                     className="w-7 h-7 text-white" 
                     fill="none" 
                     viewBox="0 0 24 24" 
-                    stroke="currentColor" strokeLineCap="round" strokeWidth="2">
+                    stroke="currentColor" strokeLinecap="round" strokeWidth="2">
                   <path
                         d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
@@ -80,18 +80,17 @@ export function Nav_bar() {
                <nav className="flex items-center justify-between">
                  <img src={logo} alt="Logo" className="h-12 w-auto" />
                </nav>
-               <nav className="flex flex-row mx-auto">
-                 <ul className=' space-x-6 flex-row hidden md:flex'>
+               <nav className="flex flex-row mx-auto ">
+                 <ul className=' space-x-6 flex-row hidden md:flex '>
                    <li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium'>ACCUEIL</li>
                    <li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium'>PRODUITS</li>
                    <li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium '>A PROPOS</li>
                  </ul>
-                 <input type="text" placeholder="Rechercher" className="ml-5 rounded-md border-1 px-4 py-1 text-center my-[-5px] border-white text-white hidden md:flex"/>
-                 <Search className="m-2 w-5 h-5 text-white cursor-pointer hidden md:flex" />
+
                </nav>
                {/*searchbar*/}
-               <nav className=" flex items-center ml-auto">
-                 <Link to="/" >
+               <nav className=" flex items-center mr-10">
+                 <Link to="/Connection" >
                   <FaUser className="text-white cursor-pointer w-6 h-6" />
                  </Link>
                </nav>
