@@ -17,22 +17,30 @@ function Gest_com(){
     const nbPage = Math.ceil(commande_tab.length / elementParPage)
 
 
-    const getpage = ()=>{
-        const pages =[]
-        pages.push(1)
-        if(nbPage <=15){
-            for(let i = 1; i<= nbPage; i++){
+ const getPage = ()=>{
+        const pages = []
+
+        if (nbPage <=15){
+            for(let i=1; i<= nbPage; i++){
                 pages.push(i)
             }
         }else{
-            if(currentPage > 5){
+            pages.push(1)
+            if (currentPage > 5){
                 pages.push("...")
             }
-            const start = Math.max(2, currentPage - 2)
-            const end = Math.min(nbPage - 1, currentPage + 2)
-            
-        }
+            const start= Math.max(2, currentPage - 2)
+            const end = Math.min(nbPage-1, currentPage + 2)
+                for(let i=start; i<=end; i++){
+                    pages.push(i)
+                }
+                if (currentPage < nbPage - 4) pages.push("...")
+                pages.push(nbPage)
+            }
+        return pages
     }
+    
+    const pages = getPage()
    
     const index_tab = ["idCom","entreprise","catCom","typeProd","qte","statut"]
     const titre_tab = ["N° Commande", "Client", "Catégorie de Commande", "Type de Produit",  "Quantité", "Statut","Montant", "Action" ]
@@ -135,18 +143,24 @@ function Gest_com(){
                         </tbody>
                     </table>
 
-                    <div className="text-center pt-3 space-x-3">
-                        {[...Array(nbPage)].map((item, index)=>(
-                                 <button className={`hover:cursor-pointer ${currentPage === index + 1 ? "bg-blue-500 px-2 rounded-full text-white " : ""}`} onClick={()=>setCurrentPage(index+1)} key={index}>
-                            {index + 1}
-                        </button>    
-                        ))}
-                    </div>
-
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row justify-between pt-5 items-center">
+                    
                     <button disabled={currentPage === 1} className="disabled:bg-gray-100 p-2 rounded-lg border border-gray-300 hover:cursor-pointer px-5" onClick={()=> setCurrentPage(currentPage - 1)}>
                         Précedent
                     </button>
+
+                    <div className=" space-x-3">
+                      {  /*{[...Array(nbPage)].map((item, index)=>(
+                                 <button className={`hover:cursor-pointer ${currentPage === index + 1 ? "bg-blue-500 px-2 rounded-full text-white " : ""}`} onClick={()=>setCurrentPage(index+1)} key={index}>
+                            {index + 1}
+                        </button>    
+                        ))}*/
+                        pages.map((p, index)=>(
+                            p === "..." ? (<span>...</span>) : (<button className={`hover:cursor-pointer ${currentPage === p ? "bg-blue-500 px-2 rounded-full text-white " : ""}`} onClick={()=>setCurrentPage(p)} key={index}>{p}</button>
+
+                        )))
+                        }
+                    </div>
 
                     <button disabled={currentPage === nbPage} className="disabled:bg-gray-100 p-2 rounded-lg border border-gray-300 hover:cursor-pointer px-10" onClick={()=> setCurrentPage(currentPage + 1)}>
                         Suivant

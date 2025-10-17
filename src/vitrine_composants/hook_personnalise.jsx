@@ -30,7 +30,7 @@ export function CommandeProvider({ children }) {
             nomComp :"",
             email : "",
             tel :"",
-            entreprise :"",
+            entreprise :"koffi jean",
             idCom: "CA08102501VI",
             typeProd: "carte de visite",
             catCom: "Commande spéciale",
