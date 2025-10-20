@@ -5,10 +5,10 @@ import icone_erreur from "../img/icone/icone_erreur.webp"
 import icone_termine from "../img/icone/icone_termine.webp"
 import icone_attent from "../img/icone/icone_en_attente.webp"
 import {useCommande} from "../vitrine_composants/hook_personnalise.jsx"
-
+import {CompCom, AfficheDetail} from "./composants_commandes.jsx"
 
 function Gest_com(){
-     const [commande_tab, setCommande_tab] = useCommande()
+    const [commande_tab, setCommande_tab] = useCommande()
     const [currentPage, setCurrentPage] = useState(1)
     const elementParPage = 10
     const indexDernier = currentPage * elementParPage
@@ -42,6 +42,16 @@ function Gest_com(){
     
     const pages = getPage()
    
+    const [open, setOpen] = useState(false)
+    const [commandeSelect, setCommandeSelect] = useState(null)
+
+    const handleVoirDetails = (commande) => {
+    setCommandeSelect(commande)
+    setOpen(true)
+  }
+
+  const handleClose = () => setOpen(false)
+
     const index_tab = ["idCom","entreprise","catCom","typeProd","qte","statut"]
     const titre_tab = ["N° Commande", "Client", "Catégorie de Commande", "Type de Produit",  "Quantité", "Statut","Montant", "Action" ]
     const dashboardTab = [
@@ -68,7 +78,7 @@ function Gest_com(){
     ]
     return(
 
-        <>
+        <section className={``}>
             <section className="pb-20">
                 <Nav_bar_with_searchbar/>
             </section>
@@ -102,7 +112,7 @@ function Gest_com(){
                 </div>
             </section>
 
-            <section className="container mx-auto">
+            <section className={`container mx-auto ${open ? "opacity-10" : "opacity-100"}`}>
                 <div className="w-full border border-gray-300 shadow-xl rounded-lg p-4 bg-white">
                     <div className="flex justify-between pb-10">
                         <p className=" font-bold text-2xl font-serif">
@@ -136,7 +146,7 @@ function Gest_com(){
                                     ))}
                                     <td className="">_</td>
                                     <td>
-                                        ⋮
+                                        <CompCom onVoirDetailsClick={() => handleVoirDetails(item)} />
                                     </td>
                                 </tr>
                             ))}
@@ -167,11 +177,11 @@ function Gest_com(){
                     </button>
                 </div>
                 </div>
-
-                
             </section>
 
-        </>
+            <AfficheDetail open={open} onClose={handleClose} commande={commandeSelect} />
+
+        </section>
     )
 }
 export default Gest_com;

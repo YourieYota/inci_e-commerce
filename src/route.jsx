@@ -32,8 +32,8 @@ function AppRouter() {
         <Route path='produits_vitrine' element={<Produit_vitrine/>}/>
         <Route path="/back_office_composants/gestion_clients" element={<Gest_client />} />
         <Route path="/back_office_composants/gestion_commandes" element={<Gest_com />} />
-        <Route path="/back_office_composants/gestion_produits" element={<Gest_compte />} />
-        <Route path="/back_office_composants/gestion_comptes" element={<Gest_prod />} />
+        <Route path="/back_office_composants/gestion_produits" element={<Gest_prod/>} />
+        <Route path="/back_office_composants/gestion_comptes" element={< Gest_compte/>} />
       </Routes>
     </BrowserRouter>
   );

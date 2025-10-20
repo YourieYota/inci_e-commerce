@@ -1,7 +1,186 @@
-
+import React, { useState } from "react";
+import { Nav_bar_with_searchbar } from "../composants";
+import total_com_img from "../img/icone/icone_total_commande.webp"
+import icone_erreur from "../img/icone/icone_erreur.webp"
+import icone_termine from "../img/icone/icone_termine.webp"
+import icone_attent from "../img/icone/icone_en_attente.webp"
+import { useProduit } from "./hookProduitPersonnalise.jsx"
+import poubelle from "../img/icone_poubelle.webp"
 
 
 function Gest_prod(){
-    return("test")
+
+    const index_tab = ["src","nom","nom","prix","pop", ""]
+    const titre_tab = ["image", "Nom", "Catégorie", "Prix de départ",  "Populaire", "Action" ]
+    const dashboardTab = [
+            {
+                titre : "Total Produits",
+                qte : "6",
+                infos : "Produits actifs",
+                icone :total_com_img,
+            },
+            {
+                titre : "Catégorie",
+                qte : "5",
+                infos : "Catégorie utilisées",
+                icone :icone_erreur,
+            },
+            {
+                titre : "Prix de base moyen",
+                qte : "7200",
+                infos : "Prix de départ moyen",
+                icone : icone_attent,
+            },
+            {
+                titre : "Produits populaires",
+                qte : "2",
+                infos : "mMs en avant",
+                icone :icone_termine,
+            }
+        ]
+
+        const [prod_tab, setProd_tab] = useProduit()
+        const [currentPage, setCurrentPage] = useState(1)
+        const elementParPage = 10
+        const indexDernier = currentPage * elementParPage
+        const indexPremier = indexDernier - elementParPage
+        const elementActuel = prod_tab.slice(indexPremier, indexDernier)
+        const nbPage = Math.ceil(prod_tab.length / elementParPage)
+    
+    
+     const getPage = ()=>{
+            const pages = []
+    
+            if (nbPage <=15){
+                for(let i=1; i<= nbPage; i++){
+                    pages.push(i)
+                }
+            }else{
+                pages.push(1)
+                if (currentPage > 5){
+                    pages.push("...")
+                }
+                const start= Math.max(2, currentPage - 2)
+                const end = Math.min(nbPage-1, currentPage + 2)
+                    for(let i=start; i<=end; i++){
+                        pages.push(i)
+                    }
+                    if (currentPage < nbPage - 4) pages.push("...")
+                    pages.push(nbPage)
+                }
+            return pages
+        }
+        
+        const pages = getPage()
+
+
+    return(
+        <>
+            <section className="pb-20">
+                <Nav_bar_with_searchbar/>
+            </section>
+            <section className="container mx-auto">
+                            <div className="flex flex-col gap-1 pb-10">
+                                <h1 className="text-3xl font-bold font-serif ">Gestion des commandes</h1>
+                            <p className="text-gray-500 font-serif">Gérez vos commandes d'impression, générez des factures et envoyez des notifications</p>
+                            </div>
+            
+                            <div className="grid grid-cols-4 gap-2 space-x-2 pb-10">
+                                {dashboardTab.map((item, index)=>(
+                                    <div key={index} className="rounded-xl bg-white border border-gray-300 shadow-xl p-10">
+                                        <div className="flex flex-row justify-between">
+                                            <div className="felx flex-col gap-2">
+                                                <p className=" font-serif text-lg">
+                                                    {item.titre}
+                                                </p>
+                                                <p className="font-bold text-2xl font-serif ">
+                                                    {item.qte}
+                                                </p>
+                                                <p className=" text-gray-500 ">
+                                                    {item.infos}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <img src={item.icone} alt="" />
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                )
+                                )}
+                            </div>
+                        </section>
+            
+                        <section className={`container mx-auto `}>
+                            <div className="w-full border border-gray-300 shadow-xl rounded-lg p-4 bg-white">
+                                <div className="flex justify-between pb-10">
+                                    <p className=" font-bold text-2xl font-serif">
+                                    Commandes récentes
+                                    </p>
+                                    
+                                    <input type="text" className="border border-gray-300 rounded-lg p-2 w-70 font-serif px-10" placeholder="Rechercher..."/>
+            
+                                    <svg className="absolute right-112 top-88 hover:cursor-pointer hover:scale-130" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="100" viewBox="0 0 50 50">
+                                        <path d="M 21 3 C 11.621094 3 4 10.621094 4 20 C 4 29.378906 11.621094 37 21 37 C 24.710938 37 28.140625 35.804688 30.9375 33.78125 L 44.09375 46.90625 L 46.90625 44.09375 L 33.90625 31.0625 C 36.460938 28.085938 38 24.222656 38 20 C 38 10.621094 30.378906 3 21 3 Z M 21 5 C 29.296875 5 36 11.703125 36 20 C 36 28.296875 29.296875 35 21 35 C 12.703125 35 6 28.296875 6 20 C 6 11.703125 12.703125 5 21 5 Z"></path>
+                                    </svg>
+            
+                                    
+                                </div>
+                                
+                                <table className="w-full ">
+                                    <thead>
+                                        <tr className="border border-gray-300">
+                                            {titre_tab.map((item, index)=>(
+                                               <td  key={index} className="pb-2 px-2">{item}</td>
+                                            ))
+                                                }
+                                        </tr>
+                                    </thead>
+            
+                                    <tbody className="">
+                                        {elementActuel.map((item, index)=>(
+                                            <tr key={index} className="border border-gray-300">
+                                                {index_tab.map((val, idx)=>(
+                                                   val ==="src" ? (<td className="px-2 py-1"><img src={item[val]} className="size-10"/></td>) : val === "" ? 
+                                                   <div className="flex flex-row">
+
+                                                   </div> : (<td key={idx} className="pb-3">{item[val]}</td> )
+                                                ))}
+                                                
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+            
+                                <div className="flex flex-row justify-between pt-5 items-center">
+                                
+                                <button disabled={currentPage === 1} className="disabled:bg-gray-100 p-2 rounded-lg border border-gray-300 hover:cursor-pointer px-5" onClick={()=> setCurrentPage(currentPage - 1)}>
+                                    Précedent
+                                </button>
+            
+                                <div className=" space-x-3">
+                                  {  /*{[...Array(nbPage)].map((item, index)=>(
+                                             <button className={`hover:cursor-pointer ${currentPage === index + 1 ? "bg-blue-500 px-2 rounded-full text-white " : ""}`} onClick={()=>setCurrentPage(index+1)} key={index}>
+                                        {index + 1}
+                                    </button>    
+                                    ))}*/
+                                    pages.map((p, index)=>(
+                                        p === "..." ? (<span>...</span>) : (<button className={`hover:cursor-pointer ${currentPage === p ? "bg-blue-500 px-2 rounded-full text-white " : ""}`} onClick={()=>setCurrentPage(p)} key={index}>{p}</button>
+            
+                                    )))
+                                    }
+                                </div>
+            
+                                <button disabled={currentPage === nbPage} className="disabled:bg-gray-100 p-2 rounded-lg border border-gray-300 hover:cursor-pointer px-10" onClick={()=> setCurrentPage(currentPage + 1)}>
+                                    Suivant
+                                </button>
+                            </div>
+                            </div>
+                        </section>
+            
+            
+                      
+        </>)
+
 }
 export default Gest_prod;

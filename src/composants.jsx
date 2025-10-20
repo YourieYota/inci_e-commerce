@@ -82,7 +82,7 @@ export function Nav_bar() {
                </nav>
                <nav className="flex flex-row mx-auto ">
                  <ul className=' space-x-6 flex-row hidden md:flex '>
-                   <li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium'>ACCUEIL</li>
+                   <Link to="/back-office"><li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium'>ACCUEIL</li></Link>
                    <li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium'>PRODUITS</li>
                    <li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium '>A PROPOS</li>
                  </ul>
