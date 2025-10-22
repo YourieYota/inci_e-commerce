@@ -4,8 +4,18 @@ import gestion_clients from "./img/gestion_clients.webp";
 import gestion_commande from "./img/gestion_commandes.webp";
 import gestion_produits from "./img/gestion_produits.webp";
 import gestion_Comptes from "./img/gestion_Comptes.webp";
-import { tab_prod } from "./vitrine_composants/produits_vitrine";
-const images = tab_prod
+import { useProduit } from "./back_office_composants/hookProduitPersonnalise";
+
+
+
+
+
+
+
+function Carousel() {
+
+  const [tab_prod, setTab_prod] = useProduit()
+  const images = tab_prod
 
 // 👉 fonction pour regrouper les images 3 par 3
 const chunkArray = ((arr, size)=>
@@ -14,9 +24,6 @@ const chunkArray = ((arr, size)=>
         return acc
     },[]))
 
-
-
-function Carousel() {
   const [current, setCurrent] = useState(0);
 
   const slides = chunkArray(images, 4); // chaque slide = 3 images

@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { Nav_bar_with_searchbar } from "../composants";
 import total_com_img from "../img/icone/icone_total_commande.webp"
 import icone_erreur from "../img/icone/icone_erreur.webp"
 import icone_termine from "../img/icone/icone_termine.webp"
 import icone_attent from "../img/icone/icone_en_attente.webp"
 import { useProduit } from "./hookProduitPersonnalise.jsx"
-import poubelle from "../img/icone_poubelle.webp"
+import crayon from "./img/icone/icone_crayon.webp"
+import oeil from "./img/icone/icone_oeil.webp"
+import del_img from "./img/icone/icone_poubelle.webp"
+import { Search, Plus, ArrowLeft } from "lucide-react"
+import { DelProduct } from "./composants_produits.jsx"
+import { useNavigate } from "react-router-dom";
+
 
 
 function Gest_prod(){
-
+    const naviguate = useNavigate()
+    const icone_tab = [oeil, crayon, del_img]
     const index_tab = ["src","nom","nom","prix","pop", ""]
     const titre_tab = ["image", "Nom", "Catégorie", "Prix de départ",  "Populaire", "Action" ]
     const dashboardTab = [
@@ -46,8 +53,19 @@ function Gest_prod(){
         const indexPremier = indexDernier - elementParPage
         const elementActuel = prod_tab.slice(indexPremier, indexDernier)
         const nbPage = Math.ceil(prod_tab.length / elementParPage)
-    
-    
+        const [prodToDel, setProdToDel] = useState(null)
+        const [prodToMod, setProdToMod] = useState(null)
+        const [modalDel, setModalDel] = useState(false)
+        const handleDel = (product)=>{
+            setProdToDel(product)
+            setModalDel(!modalDel)
+        }
+
+        const del = (id)=>{
+            DelProduct(prod_tab, setProd_tab, id)
+            setModalDel(false)
+        }
+
      const getPage = ()=>{
             const pages = []
     
@@ -117,21 +135,18 @@ function Gest_prod(){
                                     <p className=" font-bold text-2xl font-serif">
                                     Commandes récentes
                                     </p>
-                                    
+                                    <div className="relative">
+                                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                     <input type="text" className="border border-gray-300 rounded-lg p-2 w-70 font-serif px-10" placeholder="Rechercher..."/>
-            
-                                    <svg className="absolute right-112 top-88 hover:cursor-pointer hover:scale-130" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="100" viewBox="0 0 50 50">
-                                        <path d="M 21 3 C 11.621094 3 4 10.621094 4 20 C 4 29.378906 11.621094 37 21 37 C 24.710938 37 28.140625 35.804688 30.9375 33.78125 L 44.09375 46.90625 L 46.90625 44.09375 L 33.90625 31.0625 C 36.460938 28.085938 38 24.222656 38 20 C 38 10.621094 30.378906 3 21 3 Z M 21 5 C 29.296875 5 36 11.703125 36 20 C 36 28.296875 29.296875 35 21 35 C 12.703125 35 6 28.296875 6 20 C 6 11.703125 12.703125 5 21 5 Z"></path>
-                                    </svg>
-            
+                                    </div>
                                     
                                 </div>
                                 
-                                <table className="w-full ">
+                                <table className="w-full mx-auto">
                                     <thead>
                                         <tr className="border border-gray-300">
                                             {titre_tab.map((item, index)=>(
-                                               <td  key={index} className="pb-2 px-2">{item}</td>
+                                               <td  key={index} className={`pb-2 px-2 ${item === "Action" || item === "Populaire" ? "text-center" : ""}`}>{item}</td>
                                             ))
                                                 }
                                         </tr>
@@ -141,10 +156,25 @@ function Gest_prod(){
                                         {elementActuel.map((item, index)=>(
                                             <tr key={index} className="border border-gray-300">
                                                 {index_tab.map((val, idx)=>(
-                                                   val ==="src" ? (<td className="px-2 py-1"><img src={item[val]} className="size-10"/></td>) : val === "" ? 
-                                                   <div className="flex flex-row">
-
-                                                   </div> : (<td key={idx} className="pb-3">{item[val]}</td> )
+                                                   val ==="src" ? (<td key={idx} className="px-2 py-1"><img src={item[val]} className="size-10"/></td>) : val === "" ? 
+                                                        <td key={idx} className="w-30 px-2 mx-auto">
+                                                            <div className="flex flex-row justify-start items-center gap-2"> 
+                                                            {icone_tab.map((icone, index)=>(
+                                                                
+                                                                <button key={index} className="hover : cursor-pointer">
+                                                                    <img src={icone} alt="" onClick={() => {
+                                                                    if (icone === del_img) handleDel(item)
+                                                                    else if (icone === crayon) {
+                                                                        naviguate("/modif_prod", {
+                                                                            state : item,
+                                                                        })
+                                                                }   
+                                                                }}/>
+                                                                </button>
+                                                               
+                                                            ))} </div>
+                                                        </td>
+                                                   : (<td key={idx} className={`pb-3 pl-2 ${val === "pop" ? "text-center" : ""}`}>{item[val]}</td> )
                                                 ))}
                                                 
                                             </tr>
@@ -176,6 +206,35 @@ function Gest_prod(){
                                 </button>
                             </div>
                             </div>
+
+                            {// Modale de suppression
+                            }
+
+                            
+                                {modalDel && (
+                                    <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
+                                        <div className="bg-white rounded-lg p-6 shadow-lg w-auto">
+                                        <h2 className="text-lg font-semibold mb-4">Confirmer la suppression</h2>
+                                        <p className="mb-4">Voulez-vous vraiment supprimer le produit "{prodToDel?.nom}" ?</p>
+                                        <p className="mb-4">Cette action est irréversible <b>{prodToDel?.name}</b> ?</p>
+                                        <div className="flex justify-end gap-4">
+                                            <button
+                                            className="px-4 py-2 bg-gray-300 rounded"
+                                            onClick={() => setModalDel(false)}
+                                            >
+                                            Annuler
+                                            </button>
+                                            <button
+                                            className="px-4 py-2 bg-red-500 text-white rounded hover:cursor-pointer"
+                                            onClick={()=>del(prodToDel.id)}
+                                            >
+                                            Supprimer
+                                            </button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    )
+    }
                         </section>
             
             

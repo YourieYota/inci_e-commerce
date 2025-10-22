@@ -10,49 +10,12 @@ import carte_pro from "../img/produits/carte_pro.webp"
 import flyer from "../img/produits/flyer.webp"
 import { Link } from "react-router-dom";
 import { Filtrer } from "./commande";
+import { useProduit } from "../back_office_composants/hookProduitPersonnalise";
 
-export const tab_prod =[
-    {
-      src : carte_visite,
-      nom : "carte de visite",
-      prix : "3000 FCFA",
-      description : "petite description du modèle cité"
-    },
-
-    {
-      src : banderole,
-      nom : "banderole",
-      prix : "5000 FCFA",
-      description : "petite description du modèle cité"
-    },
-    {
-      src : brochure,
-      nom : "brochure",
-      prix : "3000 FCFA",
-      description : "petite description du modèle cité"
-    },
-    {
-      src : affiche,
-      nom : "affiche",
-      prix : "5000 FCFA",
-      description : "petite description du modèle cité"
-    },
-    {
-      src : carte_pro,
-      nom : "carte pro",
-      prix : "5000 FCFA",
-      description : "petite description du modèle cité"
-    },
-    {
-      src : flyer,
-      nom : "flyer",
-      prix : "2000 FCFA",
-      description : "petite description du modèle cité"
-    }
-  ]
 export function Produits_vitr({ active, setActive }){
   const [commande_tab, setCommande_tab] = useCommande();
   
+  const [tab_prod, setTab_prod] = useProduit()
   const produitsRef = useRef(null)
   const [affichDiv, setAfficheDiv] = useState(false)
   const [prod, setProd] = useState({})
