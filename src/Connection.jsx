@@ -50,7 +50,7 @@ function handleSubmit(e){
       
     <>
     {/* Navbar */}
-    <Nav_bar />
+
     {/* Form */}
 
     <div className='min-h-screen flex items-center justify-center bg-white container mx-auto'>
@@ -85,7 +85,7 @@ function handleSubmit(e){
           <button 
             type='submit'
             onClick={handleSubmit}
-            className='w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition-colors font-semibold'
+            className='hover:cursor-pointer w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition-colors font-semibold'
           >
             Se connecter
           </button>

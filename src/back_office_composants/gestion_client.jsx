@@ -1,6 +1,6 @@
 import React, { use, useState } from "react";
 import { Nav_bar_with_searchbar } from "../composants.jsx";
-
+import { Search } from "lucide-react";
 import ActionMenu from "./composants_client.jsx";
 
 const tab_clit= [
@@ -129,23 +129,25 @@ function Gest_client(){
         <section className="p-10 ">
             <Nav_bar_with_searchbar/>
         </section>
-        <section className="flex container mx-auto flex-row justify-between pb-10">
+        <section className="flex container mx-auto flex-row justify-between pb-10 items-center">
             <div className="">
                 <h1 className="font-bold text-3xl pb-2">Gestion des comptes Clients</h1>
                 <p>Gérez et suivez tous vos comptes clients en un seul endroit</p>
             </div>
-            <div className="">
-                <button className="rounded-lg bg-blue-500 border px-4 py-2 text-white">+  Nouveau Client</button>
-            </div>
+            <div className="flex flex-row">
+                            
+                <button className="border border-gray-300 bg-blue-700 text-white rounded-lg p-2 flex gap-2 hover:cursor-pointer shadow-lg hover:scale-102 hover:bg-blue-600 px-3">
+                    <p>+</p>
+                    <p>Ajouter un produit </p>
+                </button></div>
+            
         </section>
-        <div className="container mx-auto pb-10">
-            <input type="text" className="w-full border rounded-md h-8 px-15 border-gray-400 shadow-xs shadow-gray-700 bg-gray-100" placeholder="Rechercher par nom,email ou entreprise" />
-            <div className="container">
-                <svg className="absolute left-52 top-39 hover:cursor-pointer hover:scale-130" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="100" viewBox="0 0 50 50">
-                <path d="M 21 3 C 11.621094 3 4 10.621094 4 20 C 4 29.378906 11.621094 37 21 37 C 24.710938 37 28.140625 35.804688 30.9375 33.78125 L 44.09375 46.90625 L 46.90625 44.09375 L 33.90625 31.0625 C 36.460938 28.085938 38 24.222656 38 20 C 38 10.621094 30.378906 3 21 3 Z M 21 5 C 29.296875 5 36 11.703125 36 20 C 36 28.296875 29.296875 35 21 35 C 12.703125 35 6 28.296875 6 20 C 6 11.703125 12.703125 5 21 5 Z"></path>
-            </svg>
-            </div>
+
+        <div className=" relative container mx-auto pb-10">
+                <input type="text" className="w-full border rounded-md h-8 px-15 border-gray-400 shadow-xs shadow-gray-700 bg-gray-100" placeholder="Rechercher par nom,email ou entreprise" />
+               <Search className="absolute left-3 top-1/4 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         </div>
+
         <section className="container mx-auto min-h-[71vh]">
             <div className="border rounded-lg mx-auto shadow-xs border-gray-300 bg-white">
             <table className="w-full border-gray-300">

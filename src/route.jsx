@@ -21,7 +21,7 @@ function AppRouter() {
     <BrowserRouter>
       <Routes>
         {/*<Route path="/" element={<App />} />*/}
-        <Route path="/" element={<Vitrine/>} />
+        <Route path="/" element={<App/>} />
         <Route path='/Connection' element={<App/>}/>
         <Route path="/back-office" element={<Back />} />
         <Route path="/recup_password" element={<Recup_password />} />

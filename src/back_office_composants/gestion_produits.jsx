@@ -41,7 +41,7 @@ function Gest_prod(){
             {
                 titre : "Produits populaires",
                 qte : "2",
-                infos : "mMs en avant",
+                infos : "mis en avant",
                 icone :icone_termine,
             }
         ]
@@ -98,9 +98,17 @@ function Gest_prod(){
                 <Nav_bar_with_searchbar/>
             </section>
             <section className="container mx-auto">
+                            <div className="flex flex-row justify-between items-center">
                             <div className="flex flex-col gap-1 pb-10">
-                                <h1 className="text-3xl font-bold font-serif ">Gestion des commandes</h1>
+                                <h1 className="text-3xl font-bold font-serif text-blue-700">Gestion des utilisateurs</h1>
                             <p className="text-gray-500 font-serif">Gérez vos commandes d'impression, générez des factures et envoyez des notifications</p>
+                            </div>
+                            <div className="flex flex-row">
+                            
+                            <button className="border border-gray-300 bg-blue-700 text-white rounded-lg p-2 flex gap-2 hover:cursor-pointer shadow-lg hover:scale-102 hover:bg-blue-600 px-3">
+                                <p>+</p>
+                                <p>Ajouter un produit </p>
+                            </button></div>
                             </div>
             
                             <div className="grid grid-cols-4 gap-2 space-x-2 pb-10">
