@@ -2,94 +2,34 @@ import React, { use, useState } from "react";
 import { Nav_bar_with_searchbar } from "../composants.jsx";
 import { Search } from "lucide-react";
 import ActionMenu from "./composants_client.jsx";
+import { useClient } from "./hookPersonaliseeClient.jsx";
 
-const tab_clit= [
-    {
-        Nom : "Koffi",
-        prenom : "Yao Marc Alex",
-        entreprise : "N/A",
-        type_de_client : "particulier",
-        adresse : "bouake...",
-        email : "koffiyao@test.ci",
-        contact : "0101010101",
-    },
-        {
-        Nom : "Koffi",
-        prenom : "Yao Marc Alex",
-        entreprise : "ky entertainment",
-        type_de_client : "Entreprise",
-        adresse : "bouake...",
-        email : "koffiyao@test.ci",
-        contact : "0102030405",
-    },
-       {
-        Nom : "Koffi",
-        prenom : "Yao Marc Alex",
-        entreprise : "N/A",
-        type_de_client : "particulier",
-        adresse : "bouake...",
-        email : "koffiyao@test.ci",
-        contact : "0101010101",
-    },
-        {
-        Nom : "Koffi",
-        prenom : "Yao Marc Alex",
-        entreprise : "ky entertainment",
-        type_de_client : "Entreprise",
-        adresse : "bouake...",
-        email : "koffiyao@test.ci",
-        contact : "0102030405",
-    },
-       {
-        Nom : "Koffi",
-        prenom : "Yao Marc Alex",
-        entreprise : "N/A",
-        type_de_client : "particulier",
-        adresse : "bouake...",
-        email : "koffiyao@test.ci",
-        contact : "0101010101",
-    },
-        {
-        Nom : "Koffi",
-        prenom : "Yao Marc Alex",
-        entreprise : "ky entertainment",
-        type_de_client : "Entreprise",
-        adresse : "bouake...",
-        email : "koffiyao@test.ci",
-        contact : "0102030405",
-    },
-       {
-        Nom : "Koffi",
-        prenom : "Yao Marc Alex",
-        entreprise : "N/A",
-        type_de_client : "particulier",
-        adresse : "bouake...",
-        email : "koffiyao@test.ci",
-        contact : "0101010101",
-    },
-        {
-        Nom : "Koffi",
-        prenom : "Yao Marc Alex",
-        entreprise : "ky entertainment",
-        type_de_client : "Entreprise",
-        adresse : "bouake...",
-        email : "koffiyao@test.ci",
-        contact : "0102030405",
-    }
-]
-
-const index_tab = ["Nom", "Prenoms", "Entreprise", "Type de client", "Adresse", "Email", "Contact", "Actions"]
 
 //pagination
 
-
 function Gest_client(){
+    const [tab_clit, setTab_clit] = useClient()
+    const [searchItem, setSearchItem] = useState("")
+    const [elsementSearch, setElementSearch] = useState(tab_clit)
+    const [error, setError] = useState("")
+    const entete_tab = ["id","Nom", "Prenoms", "Entreprise", "Type de client", "Adresse", "Email", "Contact", "Actions"]
+    /*
+    id: 1,
+    Nom: "Koffi",
+    prenom: "Yao Marc Alex",
+    entreprise: "N/A",
+    type_de_client: "particulier",
+    adresse: "Bouaké, quartier Air France",
+    email: "koffiyao@test.ci",
+    contact: "0101010101",
+    */ 
+    const index_tab = ["id","Nom", "prenom", "entreprise", "type_de_client", "adresse", "email", "contact"]
     const [currentPage, setCurrentPage] = useState(1)
     const elementParPage = 10
     const indexDernier = currentPage * elementParPage
     const indexPremier = indexDernier - elementParPage
-    const elementActuel = tab_clit.slice(indexPremier, indexDernier)
-    const nbPage = Math.ceil(tab_clit.length / elementParPage)
+    const elementActuel = elsementSearch.slice(indexPremier, indexDernier)
+    const nbPage = Math.ceil(elsementSearch.length / elementParPage)
     const [isVisibe, setIsVisible] = useState(false)
     
     const handleChangeVisible = (e)=>{
@@ -97,6 +37,27 @@ function Gest_client(){
         setIsVisible(!isVisibe)
     }
 
+    const handleSearch =(e)=>{
+        const valeur = e.target.value?.toString().toLowerCase() || e.target.toString()
+        setSearchItem(valeur)
+        if (valeur === ""){
+            setElementSearch(tab_clit)
+            setError("")
+        }else{
+            const resultat =tab_clit.filter((item)=>
+                [item.id, item.Nom ,item.prenom ,item.entreprise , item.type_de_client, item.adresse, item.email, item.contact].some((val)=>
+                    val?.toString().toLowerCase().includes(valeur)
+                ))
+            if (resultat.length >0){
+                setElementSearch(resultat)
+                setError("")
+            }
+            else{
+                setError("OOPS Aucun résultat trouvé")
+            }
+        }
+
+    }
 
     const getPage = ()=>{
         const pages = []
@@ -144,16 +105,16 @@ function Gest_client(){
         </section>
 
         <div className=" relative container mx-auto pb-10">
-                <input type="text" className="w-full border rounded-md h-8 px-15 border-gray-400 shadow-xs shadow-gray-700 bg-gray-100" placeholder="Rechercher par nom,email ou entreprise" />
+                <input type="text" className="w-full border rounded-md h-8 px-15 border-gray-400 shadow-xs shadow-gray-700 bg-gray-100" placeholder="Rechercher par nom,email ou entreprise" onChange={handleSearch} value={searchItem}/>
                <Search className="absolute left-3 top-1/4 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         </div>
 
         <section className="container mx-auto min-h-[71vh]">
             <div className="border rounded-lg mx-auto shadow-xs border-gray-300 bg-white">
-            <table className="w-full border-gray-300">
+                {!error ? <table className="w-full border-gray-300">
                 <thead>
                     <tr className="border text-left border-gray-200">
-                        {index_tab.map((item, index)=>(
+                        {entete_tab.map((item, index)=>(
                             <th key={index} className="px-5 py-2">{item}</th>
                         ))}
                     </tr>
@@ -174,6 +135,11 @@ function Gest_client(){
                 </tbody>
                     
             </table>
+            : 
+            <div className="container mx-auto text-center text-5xl my-auto min-h-[50vh]  flex items-center justify-center"> 
+                                    <p>{error}</p>
+                                    </div>    
+        }
             </div>
             
             <div className="flex flex-row justify-between items-center pt-10 pb-10">

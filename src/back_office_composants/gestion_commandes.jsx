@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Nav_bar_with_searchbar } from "../composants";
 import total_com_img from "../img/icone/icone_total_commande.webp"
 import icone_erreur from "../img/icone/icone_erreur.webp"
@@ -9,12 +9,42 @@ import {CompCom, AfficheDetail} from "./composants_commandes.jsx"
 import { Search } from "lucide-react";
 function Gest_com(){
     const [commande_tab, setCommande_tab] = useCommande()
+    const [elementTrouve, setElementTrouve] = useState(commande_tab)
     const [currentPage, setCurrentPage] = useState(1)
     const elementParPage = 10
     const indexDernier = currentPage * elementParPage
     const indexPremier = indexDernier - elementParPage
-    const elementActuel = commande_tab.slice(indexPremier, indexDernier)
-    const nbPage = Math.ceil(commande_tab.length / elementParPage)
+    const elementActuel = elementTrouve.slice(indexPremier, indexDernier)
+    const nbPage = Math.ceil(elementTrouve.length / elementParPage)
+
+    
+    const [SearchItem, setSearchItem] = useState("")
+    const [error, setError]=useState("")
+
+  
+    const handleSearch = (e)=>{
+        const valeur = e.target.value
+        setSearchItem(valeur)
+        if(valeur === ""){
+            setElementTrouve(commande_tab)
+            setError("")
+        }else{
+            const comSearch = commande_tab.filter((item)=>
+                [item.idCom, item.entreprise ,item.catCom ,item.typeProd ,item.qte ,item.statut]
+            .some((val)=>(val?.toString().toLowerCase().includes(valeur.toLowerCase())
+            )
+                
+            ))
+            
+            console.log(comSearch)
+            if(comSearch.length >0 ){
+                setElementTrouve(comSearch)
+                setError("")
+            }else{
+                setError("Aucun résultat trouvé")
+            }
+        }
+    }
 
 
  const getPage = ()=>{
@@ -128,7 +158,7 @@ function Gest_com(){
                         </p>
                         
                         <div className="relative">
-                            <input type="text" className="border border-gray-300 rounded-lg p-2 w-70 font-serif px-10" placeholder="Rechercher..."/>
+                            <input type="text" className="border border-gray-300 rounded-lg p-2 w-70 font-serif px-10" placeholder="Rechercher..." onChange={handleSearch} value={SearchItem}/>
                             <Search className="absolute top-1/2 -translate-1/2 right-60 h-4 w-4 text-muted-foreground" />
                         </div>
                         
@@ -137,6 +167,11 @@ function Gest_com(){
                         
                     </div>
                     
+                    {error ? <div className="container mx-auto text-center text-5xl my-auto min-h-[50vh]  flex items-center justify-center"> 
+                        <p>{error}</p>
+                    </div>
+                    
+                    :
                     <table className="w-full">
                         <thead>
                             <tr className="border-b border-gray-300">
@@ -160,7 +195,9 @@ function Gest_com(){
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </table> 
+                    
+                    }
 
                     <div className="flex flex-row justify-between pt-5 items-center">
                     

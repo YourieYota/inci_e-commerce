@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Nav_bar_with_searchbar } from "../composants";
 import total_com_img from "../img/icone/icone_total_commande.webp"
 import icone_erreur from "../img/icone/icone_erreur.webp"
@@ -47,14 +47,16 @@ function Gest_prod(){
         ]
 
         const [prod_tab, setProd_tab] = useProduit()
+        const [searchItem, setSearchItem] = useState("")
+        const [elementSearch, setElementSearch]= useState(prod_tab)
+        const [error, setError] = useState("")
         const [currentPage, setCurrentPage] = useState(1)
         const elementParPage = 10
         const indexDernier = currentPage * elementParPage
         const indexPremier = indexDernier - elementParPage
-        const elementActuel = prod_tab.slice(indexPremier, indexDernier)
-        const nbPage = Math.ceil(prod_tab.length / elementParPage)
+        const elementActuel = elementSearch.slice(indexPremier, indexDernier)
+        const nbPage = Math.ceil(elementSearch.length / elementParPage)
         const [prodToDel, setProdToDel] = useState(null)
-        const [prodToMod, setProdToMod] = useState(null)
         const [modalDel, setModalDel] = useState(false)
         const handleDel = (product)=>{
             setProdToDel(product)
@@ -65,6 +67,9 @@ function Gest_prod(){
             DelProduct(prod_tab, setProd_tab, id)
             setModalDel(false)
         }
+        useEffect(()=>{
+            setElementSearch(prod_tab)
+        },[prod_tab])
 
      const getPage = ()=>{
             const pages = []
@@ -91,6 +96,26 @@ function Gest_prod(){
         
         const pages = getPage()
 
+        const handleSearch = (e)=>{
+            const valeur = e.target.value?.toString().toLowerCase()
+            setSearchItem(valeur)
+            if (valeur === ""){
+                setElementSearch(prod_tab)
+                setError("")
+            }
+            else{
+                const resultat = prod_tab.filter((item)=>
+                [item.nom, item.prix, item.pop].some((val)=> val?.toString().toLowerCase().includes(valeur))
+            )
+                if(resultat.length > 0){
+                    setElementSearch(resultat)
+                    setError("")
+                }
+                else{
+                    setError("Aucun résultat trouvé")
+                }
+            }
+        }
 
     return(
         <>
@@ -145,12 +170,12 @@ function Gest_prod(){
                                     </p>
                                     <div className="relative">
                                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                    <input type="text" className="border border-gray-300 rounded-lg p-2 w-70 font-serif px-10" placeholder="Rechercher..."/>
+                                    <input type="text" className="border border-gray-300 rounded-lg p-2 w-70 font-serif px-10" placeholder="Rechercher..." onChange={handleSearch} value={searchItem}/>
                                     </div>
                                     
                                 </div>
                                 
-                                <table className="w-full mx-auto">
+                                {!error ? <table className="w-full mx-auto">
                                     <thead>
                                         <tr className="border border-gray-300">
                                             {titre_tab.map((item, index)=>(
@@ -189,6 +214,10 @@ function Gest_prod(){
                                         ))}
                                     </tbody>
                                 </table>
+                                : <div className="container mx-auto text-center text-5xl my-auto min-h-[50vh]  flex items-center justify-center"> 
+                                    <p>{error}</p>
+                                    </div>
+                                }
             
                                 <div className="flex flex-row justify-between pt-5 items-center">
                                 
@@ -227,7 +256,7 @@ function Gest_prod(){
                                         <p className="mb-4">Cette action est irréversible <b>{prodToDel?.name}</b> ?</p>
                                         <div className="flex justify-end gap-4">
                                             <button
-                                            className="px-4 py-2 bg-gray-300 rounded"
+                                            className="px-4 py-2 bg-gray-300 rounded hover:cursor-pointer"
                                             onClick={() => setModalDel(false)}
                                             >
                                             Annuler

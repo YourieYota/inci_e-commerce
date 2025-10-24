@@ -1,0 +1,233 @@
+import React, { use, useState, useContext, createContext } from "react";
+
+const clientContext = createContext()
+
+export function useClient(){
+    const context = useContext(clientContext)
+    if (context === undefined){
+        throw new Error('useCompte must be used within a ProduitProvider')
+    }else{
+        return(context)
+    }
+}
+
+export function ClientProvider({children}){
+    const [tab_clit, setTab_clit] = useState([
+        {
+    id: 1,
+    Nom: "Koffi",
+    prenom: "Yao Marc Alex",
+    entreprise: "N/A",
+    type_de_client: "particulier",
+    adresse: "Bouaké, quartier Air France",
+    email: "koffiyao@test.ci",
+    contact: "0101010101",
+  },
+  {
+    id: 2,
+    Nom: "Konan",
+    prenom: "Jacques Emmanuel",
+    entreprise: "Café Cacao SARL",
+    type_de_client: "entreprise",
+    adresse: "Yamoussoukro, zone industrielle",
+    email: "konan.jacques@cafecacao.ci",
+    contact: "0102030405",
+  },
+  {
+    id: 3,
+    Nom: "Traoré",
+    prenom: "Aminata",
+    entreprise: "N/A",
+    type_de_client: "particulier",
+    adresse: "Korhogo, quartier Koko",
+    email: "aminata.traore@gmail.com",
+    contact: "0701020304",
+  },
+  {
+    id: 4,
+    Nom: "Zongo",
+    prenom: "Moussa",
+    entreprise: "ZonTech Informatique",
+    type_de_client: "entreprise",
+    adresse: "Abidjan, Cocody Angré 7e tranche",
+    email: "moussa.zongo@zontech.ci",
+    contact: "0587451203",
+  },
+  {
+    id: 5,
+    Nom: "Kouadio",
+    prenom: "Prisca Elvire",
+    entreprise: "N/A",
+    type_de_client: "particulier",
+    adresse: "Abengourou, quartier Plateau",
+    email: "prisca.kouadio@yahoo.fr",
+    contact: "0156894721",
+  },
+  {
+    id: 6,
+    Nom: "Bamba",
+    prenom: "Ibrahim",
+    entreprise: "Bamba Logistics",
+    type_de_client: "entreprise",
+    adresse: "Abidjan, Zone 4",
+    email: "ibrahim.bamba@bambalogistics.com",
+    contact: "0708451236",
+  },
+  {
+    id: 7,
+    Nom: "Yao",
+    prenom: "Clarisse",
+    entreprise: "N/A",
+    type_de_client: "particulier",
+    adresse: "Bouaké, quartier Kennedy",
+    email: "clarisse.yao@hotmail.com",
+    contact: "0789012345",
+  },
+  {
+    id: 8,
+    Nom: "N'Da",
+    prenom: "Franck Lionel",
+    entreprise: "Impression Plus CI",
+    type_de_client: "entreprise",
+    adresse: "Abidjan, Marcory Zone 4",
+    email: "f.lionel@impressionplus.ci",
+    contact: "0704040404",
+  },
+  {
+    id: 9,
+    Nom: "Amani",
+    prenom: "Christelle",
+    entreprise: "N/A",
+    type_de_client: "particulier",
+    adresse: "Daloa, quartier Commerce",
+    email: "amani.christelle@gmail.com",
+    contact: "0102020202",
+  },
+  {
+    id: 10,
+    Nom: "Kouamé",
+    prenom: "Jean-Baptiste",
+    entreprise: "Groupe JBK",
+    type_de_client: "entreprise",
+    adresse: "San Pedro, zone portuaire",
+    email: "jb.kouame@groupejbk.com",
+    contact: "0707777777",
+  },
+  {
+    id: 11,
+    Nom: "Diarra",
+    prenom: "Aïcha",
+    entreprise: "N/A",
+    type_de_client: "particulier",
+    adresse: "Odienné, centre-ville",
+    email: "aicha.diarra@yahoo.com",
+    contact: "0703030303",
+  },
+  {
+    id: 12,
+    Nom: "Kouassi",
+    prenom: "Didier Romaric",
+    entreprise: "PrintWorks CI",
+    type_de_client: "entreprise",
+    adresse: "Abidjan, Riviera Palmeraie",
+    email: "romaric.kouassi@printworks.ci",
+    contact: "0155123498",
+  },
+  {
+    id: 13,
+    Nom: "Yeo",
+    prenom: "Abdoulaye",
+    entreprise: "Transport Yeo Express",
+    type_de_client: "entreprise",
+    adresse: "Korhogo, zone industrielle",
+    email: "yeo.abdoulaye@yeoexpress.ci",
+    contact: "0778123098",
+  },
+  {
+    id: 14,
+    Nom: "Kra",
+    prenom: "Fabrice Arnaud",
+    entreprise: "N/A",
+    type_de_client: "particulier",
+    adresse: "Bouaké, quartier Dar-es-Salam",
+    email: "fabrice.kra@gmail.com",
+    contact: "0109080706",
+  },
+  {
+    id: 15,
+    Nom: "Ouattara",
+    prenom: "Aminata",
+    entreprise: "Ouattara Coiffure",
+    type_de_client: "entreprise",
+    adresse: "Abidjan, Adjamé",
+    email: "ouattara.aminata@coiffure.ci",
+    contact: "0706060606",
+  },
+  {
+    id: 16,
+    Nom: "Ehouman",
+    prenom: "Marcelle",
+    entreprise: "N/A",
+    type_de_client: "particulier",
+    adresse: "Yamoussoukro, quartier Morofé",
+    email: "marcelle.ehouman@gmail.com",
+    contact: "0709090909",
+  },
+  {
+    id: 17,
+    Nom: "Toure",
+    prenom: "Issa Mohamed",
+    entreprise: "Techno CI",
+    type_de_client: "entreprise",
+    adresse: "Abidjan, Plateau",
+    email: "issa.toure@technoci.ci",
+    contact: "0755555555",
+  },
+  {
+    id: 18,
+    Nom: "N’Guessan",
+    prenom: "Patricia",
+    entreprise: "N/A",
+    type_de_client: "particulier",
+    adresse: "Bingerville, quartier résidentiel",
+    email: "patricia.ngue@gmail.com",
+    contact: "0789014789",
+  },
+  {
+    id: 19,
+    Nom: "Dosso",
+    prenom: "Abiba",
+    entreprise: "Abiba Création",
+    type_de_client: "entreprise",
+    adresse: "Abidjan, Cocody 2 Plateaux",
+    email: "abiba.dosso@creation.ci",
+    contact: "0105060708",
+  },
+  {
+    id: 20,
+    Nom: "N’Diaye",
+    prenom: "Souleymane",
+    entreprise: "NDIAYE Print",
+    type_de_client: "entreprise",
+    adresse: "Bouaké, avenue du marché",
+    email: "souleymane.ndiaye@ndiayeprint.ci",
+    contact: "0758012345",
+  },
+  {
+    id: 21,
+    Nom: "Aké",
+    prenom: "Estelle Mireille",
+    entreprise: "N/A",
+    type_de_client: "particulier",
+    adresse: "Grand-Bassam, quartier France",
+    email: "estelle.ake@gmail.com",
+    contact: "0104040404",
+  }
+    ])
+
+    {return(
+        <clientContext.Provider value={[tab_clit, setTab_clit]}>
+            {children}
+        </clientContext.Provider>
+    )}
+}

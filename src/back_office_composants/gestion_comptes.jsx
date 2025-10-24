@@ -105,9 +105,7 @@ function Gest_compte(){
                             setError("")}
                         else{setError("Aucun resultat trouvé")}
             }}
-            {useEffect(()=>{
-                    console.log(error)
-                }),[error]}
+
         return(
 
             <section className="min-h-screen bg-green-50">
