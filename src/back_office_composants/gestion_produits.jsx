@@ -11,10 +11,11 @@ import del_img from "./img/icone/icone_poubelle.webp"
 import { Search, Plus, ArrowLeft } from "lucide-react"
 import { DelProduct } from "./composants_produits.jsx"
 import { useNavigate } from "react-router-dom";
-
+import {AfficherProduitChoisi} from "./Gestion_produits_composants/afficher_prod_choisi.jsx"
 
 
 function Gest_prod(){
+    const nomPage = "gestion des produits"
     const naviguate = useNavigate()
     const icone_tab = [oeil, crayon, del_img]
     const index_tab = ["src","nom","nom","prix","pop", ""]
@@ -57,7 +58,13 @@ function Gest_prod(){
         const elementActuel = elementSearch.slice(indexPremier, indexDernier)
         const nbPage = Math.ceil(elementSearch.length / elementParPage)
         const [prodToDel, setProdToDel] = useState(null)
+        const [prodToVisible, setProdToVisible]= useState(null)
+        const handlModalProdToVisible = (prod)=>{
+        setProdToVisible(prod)
+        setModalProdToVisible((prev)=> !prev)
+      }
         const [modalDel, setModalDel] = useState(false)
+        const [modalProdToVisible, setModalProdToVisible] =  useState(false)
         const handleDel = (product)=>{
             setProdToDel(product)
             setModalDel(!modalDel)
@@ -130,7 +137,7 @@ function Gest_prod(){
                             </div>
                             <div className="flex flex-row">
                             
-                            <button className="border border-gray-300 bg-blue-700 text-white rounded-lg p-2 flex gap-2 hover:cursor-pointer shadow-lg hover:scale-102 hover:bg-blue-600 px-3">
+                            <button className="border border-gray-300 bg-blue-700 text-white rounded-lg p-2 flex gap-2 hover:cursor-pointer shadow-lg hover:scale-102 hover:bg-blue-600 px-3" onClick={()=>naviguate("/add_prod")}>
                                 <p>+</p>
                                 <p>Ajouter un produit </p>
                             </button></div>
@@ -201,7 +208,9 @@ function Gest_prod(){
                                                                         naviguate("/modif_prod", {
                                                                             state : item,
                                                                         })
-                                                                }   
+                                                                }else{
+                                                                    handlModalProdToVisible(item)
+                                                                }
                                                                 }}/>
                                                                 </button>
                                                                
@@ -272,7 +281,43 @@ function Gest_prod(){
                                     </div>
                                     )
     }
-                        </section>
+
+
+{/* {
+      id : 1,
+      src : carte_visite ,
+      nom : "Carte de visite 200x400",
+      prix : "3000 FCFA",
+      description : "petite description du modèle cité",
+      cat : "Carte de visite",
+      qte_min : "100",
+      dur_prod : "7",
+      format : [{
+        Nom : "A5",
+        Largeur : "148",
+        Hauteur : "210",
+        unit : "mm"
+      },{
+        Nom : "A6",
+        Largeur : "105",
+        Hauteur : "148",
+        unit : "mm"]},
+        pop :  "oui",
+      finition : ["Mat", "Brillant"]
+    },
+      }*/}
+
+    
+        {modalProdToVisible && (
+    <AfficherProduitChoisi
+    prodToVisible={prodToVisible}
+    handlModalProdToVisible={handlModalProdToVisible}
+    prod_tab = {prod_tab}
+    setProd_tab = {setProd_tab}
+    nomPage = {nomPage}
+  />
+)}
+    </section>
             
             
                       

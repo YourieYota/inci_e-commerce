@@ -5,11 +5,12 @@ import logo from './img/logo_inci.png'
 
 import { FaUser } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
-import { Search } from "lucide-react";
+import { Search,Menu } from "lucide-react";
 import gestion_clients from './img/gestion_clients.webp';
 import gestion_commande from './img/gestion_commandes.webp';
 import gestion_produits from './img/gestion_produits.webp';
 import gestion_Comptes from './img/gestion_Comptes.webp';
+import { Alert } from "antd";
 
 
  export const tab_img_back =[{
@@ -64,21 +65,49 @@ export function Nav_bar() {
     }
 
     export function Nav_bar_with_searchbar() {
+      const [isVisible, setIsVisible] = useState(false)
+      const [isActive, setIsActive] = useState(false)
+      const handleVisible = (e)=>{
+        setIsVisible(!isVisible)
+        setIsActive(!isActive)
+      }
        return(<>
-       <header className="w-full px-10 fixed left-0 right-0 bg-green-700 top-0  z-10">
-            <div className='min-w-screen px-10 flex md:justify-between items-center justify-between py-2 mx-auto'>
-              <button className="block sm:hidden p-2">
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    className="w-7 h-7 text-white" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor" strokeLinecap="round" strokeWidth="2">
-                  <path
-                        d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
+       <header className={`w-screen sm:w-full px-10 fixed left-0 right-0 ${isActive ? "" : "bg-green-700" } top-0  z-10`}>
+            <div className='  min-w-screen sm:pl-10 pr-10 flex md:justify-between items-center justify-between py-2 sm:mx-auto'>
+             
+             <button className="block sm:hidden p-2">
+                <Menu onClick={handleVisible}/>
               </button>
+             {isVisible && <div className={`absolute left-0 top-0 flex flex-col justify-start bg-green-700 text-white 
+              transition-all duration-500 ease-in-out ${isActive  ? "h-screen w-3/4" : "h-0 w-0 overflow-hidden"}
+              ${isVisible ? "translate-x-0" : "-translate-x-full"}`}> 
+               <div className="flex flex-col gap-5">
+                <button className="block p-2 z-10">
+                <Menu onClick={handleVisible}/>
+              </button>
+              <div className="flex">
+                <div className="rounded-full border bg-white p-20 mx-auto">
+
+                </div>
+
+              </div>
+                  <div className="w-full mx-auto">
+                  <ul className='w-full text-center mx-auto flex-col flex gap-2 justify-center items-center'>
+                   <li className='text-white py-2 hover:bg-green-500 hover:text-gray-300 hover:font-serif cursor-pointer w-full
+                   font-medium ' onClick={()=>{setIsVisible(false) 
+                   setIsActive(false)}}><Link to="/back-office" className="w-full block" >ACCUEIL</Link></li>
+                   
+                    <li onClick={()=>{setIsVisible(false) 
+                   setIsActive(false)}} className='text-white py-2 hover:bg-green-500 hover:text-gray-300 hover:font-serif cursor-pointer font-medium w-full '><Link className="w-full block">{"PorduitS".toUpperCase()}</Link></li>
+                   
+                   <li onClick={()=>{setIsVisible(false) 
+                   setIsActive(false)}} className='text-white py-2 hover:bg-green-500 hover:text-gray-300 hover:font-serif cursor-pointer w-full
+                   font-medium '><Link className="w-full block">A PROPOS</Link></li>
+                 </ul></div>
+               </div>
+              </div>}
                <nav className="flex items-center justify-between">
-                 <img src={logo} alt="Logo" className="h-12 w-auto" />
+                 <img src={logo} alt="Logo" className="hidden sm:block h-12 w-auto" />
                </nav>
                <nav className="flex flex-row mx-auto ">
                  <ul className=' space-x-6 flex-row hidden md:flex '>
@@ -91,7 +120,7 @@ export function Nav_bar() {
                {/*searchbar*/}
                <nav className=" flex items-center mr-10">
                  <Link to="/Connection" >
-                  <FaUser className="text-white cursor-pointer w-6 h-6" />
+                  {!isActive && <FaUser className="text-white cursor-pointer w-6 h-6" />}
                  </Link>
                </nav>
                        </div>
