@@ -2,16 +2,16 @@ import React from 'react';
 import './CSS.css';
 import logo from './img/logo_inci.png';
 import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
-import  {Nav_bar, Nav_bar_with_searchbar}  from './composants';
-import  { tab_img_back }  from './composants';
+import  {Nav_bar, Nav_bar_with_searchbar, tab_img_back}  from './composants';
 function Back() {
+  const tab_back =tab_img_back()
     return(
       <>
       <Nav_bar_with_searchbar/>
       <div className='container min-h-screen bg-white mx-auto pt-28 p-4'>
         <h1 className='text-center text-blue-700 text-xl sm:text-2xl font-bold mb-6'>Bonjour Monsieur yourie</h1>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-            {tab_img_back.map((item, id)=>(
+            {tab_back.map((item, id)=>(
               <div  key={id}>
               <Link to={`${id === 0 ? "/back_office_composants/gestion_clients" : id === 1 ? "/back_office_composants/gestion_commandes" : id === 2 ? "/back_office_composants/gestion_produits" : "/back_office_composants/gestion_comptes"}`}> <div className='grid grid-cols-1 sm:grid-cols-2 border border-green-700 rounded-2xl cursor-pointer hover:scale-105 transition-transform duration-300 ease-in-out overflow-hidden'>
                   <div  className='flex items-center justify-center'>

@@ -12,7 +12,7 @@ function Modif_prod() {
   const [ajour, setAjour] = useState(false);
   const [error, setError] = useState(null);
   const [checked_switch, setChecked_switch] = useState(false);
-  const [Nom_format, setNom_format] = useState("");
+  const [nom_format, setNom_format] = useState("");
   const [Largeur_format, setLargeur_format] = useState("");
   const [Hauteur_format, setHauteur_format] = useState("");
   const [unit_format, setUnit_format] = useState("mm");
@@ -28,7 +28,7 @@ function Modif_prod() {
     dur_prod: "",
     format: [],
     finition: [],
-    pop: false,
+    pop: "non",
   });
 
   const tab_cat = [
@@ -44,12 +44,19 @@ function Modif_prod() {
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
-    if (type === "file" && files[0]) {
-      setProduit((prev) => ({
+    if (type === "file") {
+      const file = e.target.files[0]
+      if(file){
+          setProduit((prev) => ({
         ...prev,
-        [name]: URL.createObjectURL(files[0]),
-      }));
-    } else {
+        [name]: URL.createObjectURL(file),
+     file }));
+      }
+      
+    }else if(name === "prix"){
+      setProduit((prev)=>({...prev, prix : (value)}))
+    }
+     else {
       setProduit({ ...produit, [name]: value });
     }
   };
@@ -60,9 +67,10 @@ function Modif_prod() {
         ? prev.filter((item) => item !== finition)
         : [...prev, finition];
       setProduit((p) => ({ ...p, finition: newFinitions }));
-      return newFinitions;
-    });
-  };
+      return newFinitions
+    })
+  }
+
 
   const onChangeFormat = (e) => {
     const [name, value] = [e.target.name, e.target.value]
@@ -70,16 +78,23 @@ function Modif_prod() {
     else if (name === "LargeurForm") setLargeur_format(value);
     else if (name === "HauteurForm") setHauteur_format(value);
     else if (name === "unitForm") setUnit_format(value);
-  };
+  }
+  const tab_format = produit.format
+  /*useEffect(()=>{
+    console.log(produit)
+    console.log(nom_format)
+    console.log("tab_format"+ produit.format)
+  },[nom_format])*/
 
   const addformat = (e) => {
-    if (Nom_format && Largeur_format && Hauteur_format && unit_format) {
+    if (nom_format && Largeur_format && Hauteur_format && unit_format) {
       const new_format = {
-        Nom: Nom_format,
+        Nom: nom_format,
         Largeur: Largeur_format,
         Hauteur: Hauteur_format,
         unit: unit_format,
-      };
+      }
+
       setProduit((prev) => ({ ...prev, format: [...prev.format, new_format] }));
       setNom_format("");
       setLargeur_format("");
@@ -89,17 +104,26 @@ function Modif_prod() {
     } else {
       setError("Veuillez remplir tous les champs");
     }
-  };
+  }
+
+  const del_format=(item)=>{
+        const resul = tab_format.filter((_, index)=>(
+          item !== index
+        ))
+        setProduit((prev)=>(
+          {...prev, format : resul}
+        ))
+        return(console.log(produit))
+      }
 
   const onChange = (checked) => {
-    setChecked_switch(checked);
-    setProduit((prev) => ({ ...prev, pop: checked }));
+    checked ? setProduit((prev) => ({ ...prev, pop: "oui" })) : setProduit((prev) => ({ ...prev, pop: "non" }))
+    
   };
 
-  const handleUpdate = (e) => {
+  const onAdd = (e) => {
     e.preventDefault();
-    // ici tu peux appeler une fonction externe basée sur ces données
-    console.log("Produit sauvegardé :", produit);
+    setProd_tab((prev)=>([...prev, {...produit, prix : (produit.prix + "FCFA")}]))
     setAjour(true);
   };
 
@@ -132,7 +156,7 @@ function Modif_prod() {
           <div className="w-3/4 border border-gray-200 rounded-lg p-4 bg-white space-y-4 mx-auto">
             <div className="flex flex-col gap-2 font-medium">
               <label>Nom du produit *</label>
-              <input
+              <input required
                 type="text"
                 name="nom"
                 className="border rounded-md p-2 border-gray-300"
@@ -169,12 +193,12 @@ function Modif_prod() {
 
             <div className="flex flex-col gap-2 font-medium">
               <label>Image du produit *</label>
-              <input
+              <input required
                 type="file"
                 name="src"
                 className="border rounded-lg p-2 border-gray-300"
                 onChange={handleChange}
-                value={produit.src}
+                accept="image/*"
               />
             </div>
           </div>
@@ -186,7 +210,7 @@ function Modif_prod() {
             <div className="grid grid-cols-2 gap-2">
               <div className="flex flex-col gap-2 font-medium">
                 <label>Prix de base (XOF) *</label>
-                <input
+                <input required
                   type="text"
                   name="prix"
                   className="border rounded-md p-2 border-gray-300"
@@ -196,7 +220,7 @@ function Modif_prod() {
               </div>
               <div className="flex flex-col gap-2 font-medium">
                 <label>Quantité minimum *</label>
-                <input
+                <input required
                   type="number"
                   name="qte_min"
                   className="border rounded-md p-2 border-gray-300"
@@ -208,7 +232,7 @@ function Modif_prod() {
 
             <div className="flex flex-col gap-2 font-medium">
               <label>Durée de production (jours) *</label>
-              <input
+              <input required
                 type="text"
                 name="dur_prod"
                 className="border rounded-md p-2 border-gray-300"
@@ -218,7 +242,7 @@ function Modif_prod() {
             </div>
 
             <div className="flex flex-row gap-2 items-center">
-              <Switch onChange={onChange} className="bg-blue-800" />
+              <Switch onChange={onChange}  className="bg-blue-800"/>
               <p>Produit populaire (mis en avant)</p>
             </div>
           </div>
@@ -228,17 +252,37 @@ function Modif_prod() {
         <section className="container mx-auto mt-10">
           <div className="w-3/4 border border-gray-200 rounded-lg p-4 bg-white space-y-4 mx-auto">
             <h4 className="text-2xl font-medium">Formats disponibles</h4>
+            
+            {tab_format.map((item, index)=>(
+              <div key={index} className="flex rounded-lg gap-2 border px-2 py-4 border-gray-300 relative" >
+                                <p>
+                                    {item.Nom}
+                                </p>
+                                <p> 
+                                    {item.Largeur ? item.Largeur + "x": ""} 
+                                </p>
+                                <p>
+                                    {item.Hauteur}
+                                </p>
+                                <p>
+                                    {item.unit}
+                                </p>
+                                <div className="absolute top-1/2 -translate-y-1/2 right-4 hover:cursor-pointer" onClick={()=>del_format(index)}>
+                                x
+                                </div>
+                        </div>
+            ))}
 
-            <div className="flex flex-row gap-2 font-medium">
-              <input
+            <div className="flex flex-row gap-2 font-medium pt-2">
+              <input required
                 type="text"
                 name="nomForm"
                 placeholder="Nom"
                 className="border rounded-lg p-2 border-gray-300"
                 onChange={onChangeFormat}
-                value={Nom_format}
+                value={nom_format}
               />
-              <input
+              <input required
                 type="text"
                 name="LargeurForm"
                 placeholder="Largeur"
@@ -246,7 +290,7 @@ function Modif_prod() {
                 onChange={onChangeFormat}
                 value={Largeur_format}
               />
-              <input
+              <input required
                 type="text"
                 name="HauteurForm"
                 placeholder="Hauteur"
@@ -275,14 +319,14 @@ function Modif_prod() {
           </div>
         </section>
 
-        {/* 🟧 Finitions */}
+        {/* Finitions */}
         <section className="container mx-auto mt-10">
           <div className="w-3/4 border border-gray-200 rounded-lg p-4 bg-white space-y-4 mx-auto">
             <h4 className="text-2xl font-medium">Finitions disponibles</h4>
             <div className="flex flex-col gap-2">
               {tab_finition.map((item, index) => (
                 <div key={index} className="flex flex-row gap-2">
-                  <input
+                  <input required
                     type="checkbox"
                     checked={check.includes(item)}
                     onChange={() => handleChecked(item)}
@@ -306,7 +350,7 @@ function Modif_prod() {
             </button>
             <button
               className="border rounded-lg p-1 px-3 border-gray-300 font-medium bg-blue-800 text-white hover:cursor-pointer"
-              onClick={handleUpdate}
+              onClick={onAdd}
             >
               Enregistrer
             </button>

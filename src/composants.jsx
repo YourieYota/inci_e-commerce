@@ -11,34 +11,48 @@ import gestion_commande from './img/gestion_commandes.webp';
 import gestion_produits from './img/gestion_produits.webp';
 import gestion_Comptes from './img/gestion_Comptes.webp';
 import { Alert } from "antd";
+import { useProduit } from "./back_office_composants/hookProduitPersonnalise";
+import { useCompte } from "./back_office_composants/hookPersonnaliseCompte";
+import { useClient } from "./back_office_composants/hookPersonaliseeClient";
+import { useCommande } from "./vitrine_composants/hook_personnalise";
 
 
- export const tab_img_back =[{
+ export function tab_img_back(){
+    
+  const [prodNbre, setProdNbre] = useProduit()
+  const [comNbre, setComNbre] = useCommande()
+  const [clitNbre, setClitNbre] = useClient()
+  const [compteNbr, setCompteNbr] = useCompte()
+
+
+  const tab = [{
     id : 1,
     src : gestion_clients,
     name : "Gestion des clients",
     nom : "clients",
-    nbre : 3}, 
+    nbre : clitNbre.length}, 
 
     {
     id : 2,
     src : gestion_commande,
     name : "Gestion des commandes",
     nom : "commandes",
-    nbre : 3}, 
+    nbre : comNbre.length}, 
 
     {id : 3,
     src : gestion_produits,
     name : "Gestion des produits",
     nom : "produits",
-    nbre : 3},
+    nbre : prodNbre.length},
 
     {id : 4,
     src : gestion_Comptes,
     name : "Gestion des comptes",
     nom : "comptes",
-    nbre : 3}
+    nbre : compteNbr.length}
   ]
+  return(tab)
+ }
 export function Nav_bar() {
        return(<>
        <header className=" rounded-2xl min-w-screen px-10 fixed left-1/2 -translate-x-1/2 bg-green-700 top-5 ">
@@ -98,11 +112,11 @@ export function Nav_bar() {
                    setIsActive(false)}}><Link to="/back-office" className="w-full block" >ACCUEIL</Link></li>
                    
                     <li onClick={()=>{setIsVisible(false) 
-                   setIsActive(false)}} className='text-white py-2 hover:bg-green-500 hover:text-gray-300 hover:font-serif cursor-pointer font-medium w-full '><Link className="w-full block">{"PorduitS".toUpperCase()}</Link></li>
+                   setIsActive(false)}} className='text-white py-2 hover:bg-green-500 hover:text-gray-300 hover:font-serif cursor-pointer font-medium w-full '><Link to={"/back_office_composants/gestion_produits"} className="w-full block">{"PorduitS".toUpperCase()}</Link></li>
                    
                    <li onClick={()=>{setIsVisible(false) 
                    setIsActive(false)}} className='text-white py-2 hover:bg-green-500 hover:text-gray-300 hover:font-serif cursor-pointer w-full
-                   font-medium '><Link className="w-full block">A PROPOS</Link></li>
+                   font-medium '><Link  className="w-full block">A PROPOS</Link></li>
                  </ul></div>
                </div>
               </div>}
@@ -112,7 +126,14 @@ export function Nav_bar() {
                <nav className="flex flex-row mx-auto ">
                  <ul className=' space-x-6 flex-row hidden md:flex '>
                    <Link to="/back-office"><li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium'>ACCUEIL</li></Link>
-                   <li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium'>PRODUITS</li>
+
+                    <li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium'><Link to={"/back_office_composants/gestion_clients"}> CLIENTS</Link></li>
+
+                    <li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium'><Link to={"/back_office_composants/gestion_commandes"}> COMMANDES</Link></li>
+
+                    <li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium'><Link to={"/back_office_composants/gestion_comptes"}>COMPTES</Link></li>
+
+                   <li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium'><Link to={"/back_office_composants/gestion_produits"}> PRODUITS</Link></li>
                    <li className='text-white hover:text-gray-300 hover:font-serif cursor-pointer font-medium '>A PROPOS</li>
                  </ul>
 

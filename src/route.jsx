@@ -15,7 +15,7 @@ import Gest_compte from "./back_office_composants/gestion_comptes.jsx"
 import Gest_prod from "./back_office_composants/gestion_produits.jsx"
 import Modif_prod from "./back_office_composants/Gestion_produits_composants/modif_prod.jsx"
 import Add_prod from "./back_office_composants/Gestion_produits_composants/add_prod.jsx"
-
+import CompteAdd from "./back_office_composants/gestionCompte/compteAdd.jsx"
 function AppRouter() {
   return (
     <BrowserRouter>
@@ -37,6 +37,7 @@ function AppRouter() {
         <Route path="/back_office_composants/gestion_comptes" element={< Gest_compte/>} />
         <Route path="/modif_prod" element={<Modif_prod/>}/>
         <Route path='/add_prod' element={<Add_prod/>}/>
+        <Route path='/addCompte' element={<CompteAdd/>}></Route>
       </Routes>
     </BrowserRouter>
   );

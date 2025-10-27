@@ -18,6 +18,7 @@ function Modif_prod(){
     const [ajour, setAjour]=useState(false)
     const handleUpdate = (e)=>{
         e.preventDefault()
+        setProduit((prev)=>({...prev, prix : (produit.prix + "FCFA")}))
         setProd_tab((prev)=>
             prev.map((item)=>
                 item.id === produit.id ? produit : item
@@ -176,7 +177,7 @@ function Modif_prod(){
             <div className="grid grid-cols-2 gap-2">
                     <div className="flex flex-col gap-2 font-medium">
                         <label htmlFor="prix">Prix de base (XOF) *</label>
-                         <input type="text" id="prix" name="prix" className="border rounded-md p-2 border-gray-300" onChange={handleChange} value={produit.prix.slice(0, -5)}/>
+                         <input type="text" id="prix" name="prix" className="border rounded-md p-2 border-gray-300" onChange={handleChange} value={produit.prix}/>
                     </div>
                     
                     <div>

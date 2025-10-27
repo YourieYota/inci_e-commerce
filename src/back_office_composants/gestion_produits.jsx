@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, {useEffect, useRef, useState } from "react";
 import { Nav_bar_with_searchbar } from "../composants";
 import total_com_img from "../img/icone/icone_total_commande.webp"
 import icone_erreur from "../img/icone/icone_erreur.webp"
@@ -15,39 +15,65 @@ import {AfficherProduitChoisi} from "./Gestion_produits_composants/afficher_prod
 
 
 function Gest_prod(){
+    const [prod_tab, setProd_tab] = useProduit()
+
+   const qteCat = () => {
+  return prod_tab.reduce((acc, val) => {
+    if (!acc.includes(val.cat)) {
+      acc.push(val.cat);
+    }
+    return acc
+  }, [])
+}
+
+    const prixMoy = () => {
+   const total = prod_tab.reduce((acc, val) => acc + parseInt(val.prix), 0);
+  return Math.ceil(total / prod_tab.length)
+  };
+
+  const nbPop =()=>{
+        return(prod_tab.reduce((acc, val)=>{
+            if(val.pop === "oui"){
+                return acc+1
+            }
+            return acc
+        }, 0))
+    
+  }
+
+
     const nomPage = "gestion des produits"
     const naviguate = useNavigate()
     const icone_tab = [oeil, crayon, del_img]
-    const index_tab = ["src","nom","nom","prix","pop", ""]
+    const index_tab = ["src","nom","cat","prix","pop", ""]
     const titre_tab = ["image", "Nom", "Catégorie", "Prix de départ",  "Populaire", "Action" ]
     const dashboardTab = [
             {
                 titre : "Total Produits",
-                qte : "6",
+                qte : prod_tab.length,
                 infos : "Produits actifs",
                 icone :total_com_img,
             },
             {
                 titre : "Catégorie",
-                qte : "5",
+                qte : qteCat().length,
                 infos : "Catégorie utilisées",
                 icone :icone_erreur,
             },
             {
                 titre : "Prix de base moyen",
-                qte : "7200",
+                qte : prixMoy() + " FCFA",
                 infos : "Prix de départ moyen",
                 icone : icone_attent,
             },
             {
                 titre : "Produits populaires",
-                qte : "2",
+                qte : nbPop(),
                 infos : "mis en avant",
                 icone :icone_termine,
             }
         ]
 
-        const [prod_tab, setProd_tab] = useProduit()
         const [searchItem, setSearchItem] = useState("")
         const [elementSearch, setElementSearch]= useState(prod_tab)
         const [error, setError] = useState("")
@@ -132,8 +158,8 @@ function Gest_prod(){
             <section className="container mx-auto">
                             <div className="flex flex-row justify-between items-center">
                             <div className="flex flex-col gap-1 pb-10">
-                                <h1 className="text-3xl font-bold font-serif text-blue-700">Gestion des utilisateurs</h1>
-                            <p className="text-gray-500 font-serif">Gérez vos commandes d'impression, générez des factures et envoyez des notifications</p>
+                                <h1 className="text-3xl font-bold font-serif text-blue-700">Gestion des produits</h1>
+                            <p className="text-gray-500 font-serif">Gérez vos différents, Ajoutez de nouveaux produits</p>
                             </div>
                             <div className="flex flex-row">
                             
@@ -194,10 +220,10 @@ function Gest_prod(){
             
                                     <tbody className="">
                                         {elementActuel.map((item, index)=>(
-                                            <tr key={index} className="border border-gray-300">
+                                            <tr key={index} className="border border-gray-300 hover:bg-gray-50 hover:cursor-pointer" >
                                                 {index_tab.map((val, idx)=>(
-                                                   val ==="src" ? (<td key={idx} className="px-2 py-1"><img src={item[val]} className="size-10"/></td>) : val === "" ? 
-                                                        <td key={idx} className="w-30 px-2 mx-auto">
+                                                   val ==="src" ? (<td key={idx} onClick={()=>handlModalProdToVisible(item)}  className="px-2 py-1"><img src={item[val]} className="size-10"/></td>) : val === "" ? 
+                                                        <td  key={idx} className="w-30 px-2 mx-auto">
                                                             <div className="flex flex-row justify-start items-center gap-2"> 
                                                             {icone_tab.map((icone, index)=>(
                                                                 
@@ -208,15 +234,19 @@ function Gest_prod(){
                                                                         naviguate("/modif_prod", {
                                                                             state : item,
                                                                         })
-                                                                }else{
-                                                                    handlModalProdToVisible(item)
-                                                                }
+                                                                    
+                                                                }else{handlModalProdToVisible(item)}
                                                                 }}/>
                                                                 </button>
                                                                
                                                             ))} </div>
                                                         </td>
-                                                   : (<td key={idx} className={`pb-3 pl-2 ${val === "pop" ? "text-center" : ""}`}>{item[val]}</td> )
+                                                   : (<td key={idx} onClick={()=>handlModalProdToVisible(item)} className={`pb-3 pl-2 ${val === "pop" ? "text-center flex justify-center items-center mt-2" : ""}`}>
+                                                    <p className={`${val === "pop" ? item.pop ==="oui" ? "bg-yellow-500 rounded-lg text-center w-10" :"text-center" : ""}`}> 
+                                                        {item[val]}</p>
+                                                   {/*${val === "pop" ? item.pop ==="oui" ? "bg-blue-500 rounded-lg text-center" :"text-center" : ""*/}
+                                                    
+                                                    </td> )
                                                 ))}
                                                 
                                             </tr>
@@ -230,7 +260,7 @@ function Gest_prod(){
             
                                 <div className="flex flex-row justify-between pt-5 items-center">
                                 
-                                <button disabled={currentPage === 1} className="disabled:bg-gray-100 p-2 rounded-lg border border-gray-300 hover:cursor-pointer px-5" onClick={()=> setCurrentPage(currentPage - 1)}>
+                                <button disabled={currentPage === 1} className="disabled:bg-gray-200 p-2 rounded-lg border border-gray-300 hover:cursor-pointer px-5 hover:bg-gray-100 " onClick={()=> setCurrentPage(currentPage - 1)}>
                                     Précedent
                                 </button>
             
@@ -247,7 +277,7 @@ function Gest_prod(){
                                     }
                                 </div>
             
-                                <button disabled={currentPage === nbPage} className="disabled:bg-gray-100 p-2 rounded-lg border border-gray-300 hover:cursor-pointer px-10" onClick={()=> setCurrentPage(currentPage + 1)}>
+                                <button disabled={currentPage === nbPage} className="disabled:bg-gray-200 p-2 rounded-lg border border-gray-300 hover:cursor-pointer px-10 hover:bg-gray-100" onClick={()=> setCurrentPage(currentPage + 1)}>
                                     Suivant
                                 </button>
                             </div>

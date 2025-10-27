@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 
 
 export function AfficherProduitChoisi({prodToVisible, handlModalProdToVisible, prod_tab, setProd_tab, nomPage}){
 
+        const infosRef = useRef(null)
         const [radioFormat, setRadioFormat] = useState("")
         const [radioFinition, setRadioFinition] = useState("")
         const [qte, setQte] = useState("")
@@ -17,12 +18,21 @@ export function AfficherProduitChoisi({prodToVisible, handlModalProdToVisible, p
                 setQte(value)
             }
         }
-
+        
+        useEffect(()=>{
+            const handleClickOutside =(e)=>{
+                if(infosRef.current && !infosRef.current.contains(e.target)){
+                    handlModalProdToVisible()
+                }
+            }
+            document.addEventListener("mousedown", handleClickOutside)
+            return ()=> document.removeEventListener("mousedown", handleClickOutside)
+        })
         /*const updateCom =(e)=>{
             const result = prod_tab.filter((val, id)=>)
         }*/
         return(<section className="fixed top-0 right-0 bg-black/50 min-h-screen w-full">
-        <div className="fixed w-1/4 min-h-3/4 bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl overflow-hidden">
+        <div ref={infosRef} className="fixed w-1/4 min-h-3/4 bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl overflow-hidden">
             <div>
             <div className="flex space-y-2 p-7 px-5 items-start gap-5">
                 <div className="flex flex-col gap-2">
@@ -102,7 +112,7 @@ export function AfficherProduitChoisi({prodToVisible, handlModalProdToVisible, p
                     </div>
 
                     <div className="flex gap-2 pb-5">
-                        <button className="disabled:bg-blue-700/30 rounded-lg px-5 py-2 shadow-md bg-blue-700 hover:cursor-pointer disabled:cursor-default" onClick={""} disabled={nomPage === "gestion des produits"}>
+                        <button className="disabled:bg-blue-700/30 rounded-lg px-5 py-2 shadow-md bg-blue-700 hover:cursor-pointer disabled:cursor-default" disabled={nomPage === "gestion des produits"}>
                         <h2 className="border-gray-300 font-medium flex items-center gap-4 text-white ">
                             <div className="border border-white rounded-full px-1 text-xs text-white">
                                 +

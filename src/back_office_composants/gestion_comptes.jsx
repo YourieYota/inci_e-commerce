@@ -1,4 +1,4 @@
-import React , {useState, useEffect} from "react"
+import React , {useState, useEffect, useRef} from "react"
 import { Nav_bar_with_searchbar } from "../composants"
 import crayon from "./img/icone/icone_crayon.webp"
 import oeil from "./img/icone/icone_oeil.webp"
@@ -7,15 +7,16 @@ import total_com_img from "../img/icone/icone_total_commande.webp"
 import icone_erreur from "../img/icone/icone_erreur.webp"
 import icone_termine from "../img/icone/icone_termine.webp"
 import icone_attent from "../img/icone/icone_en_attente.webp"
-import { Search, User } from "lucide-react"
+import { Search, User, Mail, Phone, Building2, Key, Calendar } from "lucide-react"
 import { useCompte } from "./hookPersonnaliseCompte"
+import { useNavigate } from "react-router-dom"
 
 
 function Gest_compte(){
     const [compte, setCompte] = useCompte()
     const tab_role = ["Tous les rôles", "Admin", "Client","Invité"]
     const tab_statut = ["Actif", "Inactif", "Suspendu"]
-
+    const naviguate = useNavigate()
     /*id : 1,
         Nom : "koffi jean paul",
         Email : "jeanpaulkoffi@test.com",
@@ -25,32 +26,44 @@ function Gest_compte(){
         inscription : "10/02/2025",
         Photo : "https://randomuser.me/api/portraits/men/1.jpg"*/
 
-    const entete_tab =["Photo", "Nom", "Email", "Entreprise", "Role", "Statut", "Inscription", "Action"]
-    const indice_tab =["Photo", "Nom", "Email", "Entreprise", "Role", "Statut", "inscription"]
+    const entete_tab =["Photo", "Nom", "Email", "Entreprise", "Role", "Statut", "Login", "Mot de passe","Inscription", "Action"]
+    const indice_tab =["Photo", "Nom", "Email", "Entreprise", "Role", "Statut", "Login", "MotDePasse", "inscription"]
+
+    const useractif = ()=>{
+        const actif = compte.filter((p)=>(p.Statut === "Actif"))
+        return (actif)
+    }
+
+    const userInactif = ()=>{
+        const actif = compte.filter((p)=>(p.Statut === "Inactif"))
+        return (actif)
+    }
+
+    const userSuspendu = ()=>{
+        const actif = compte.filter((p)=>(p.Statut === "Suspendu"))
+        return (actif)
+    }
+
     const icone_tab = [oeil, crayon, del_img]
     const dashboardTab = [
                 {
-                    titre : "Total Produits",
-                    qte : "6",
-                    infos : "Produits actifs",
+                    titre : "Total utilisateurs",
+                    qte : compte.length,
                     icone :total_com_img,
                 },
                 {
-                    titre : "Catégorie",
-                    qte : "5",
-                    infos : "Catégorie utilisées",
+                    titre : "Utilisateurs actifs",
+                    qte : useractif().length,
                     icone :icone_erreur,
                 },
                 {
-                    titre : "Prix de base moyen",
-                    qte : "7200",
-                    infos : "Prix de départ moyen",
+                    titre : "Utilisateurs inactifs",
+                    qte : userInactif().length,
                     icone : icone_attent,
                 },
                 {
-                    titre : "Produits populaires",
-                    qte : "2",
-                    infos : "mis en avant",
+                    titre : "Utilisateurs suspendu  ",
+                    qte : userSuspendu().length,
                     icone :icone_termine,
                 }
             ]
@@ -89,7 +102,7 @@ function Gest_compte(){
         
         const pages = getPage()
 
-        {//fonction de rechercher 
+        {//fonction de recherche
             }
             const [error, setError] = useState("")
             const [search, setSearch] = useState("")
@@ -106,6 +119,39 @@ function Gest_compte(){
                         else{setError("Aucun resultat trouvé")}
             }}
 
+            const [userToDel, setUserToDel]=useState(null)
+            const [modalToDel, setModalToDel] = useState(false)
+
+            const addUserToDel = (user)=>{
+                setUserToDel(user)
+                setModalToDel(!modalToDel)
+            }
+
+            const onDel = (id) => {
+            setCompte((prev) => prev.filter((val) => val.id !== id));
+            setModalToDel(false);
+}
+            useEffect(()=>setElementTrouve(compte), [compte])
+            
+            const [modalInfos, setModalInfos]=useState(false)
+            const [userToView, setUserToView]= useState(null)
+            const modalRef = useRef(null)
+            
+            const onDisplay = (user)=>{
+                setUserToView(user)
+                setModalInfos(!modalInfos)
+            }
+
+            useEffect(()=>{
+                const handleClickOutside = (e)=>{
+                    if (modalRef.current && !modalRef.current.contains(e.target)) setModalInfos(false)
+                }
+                document.addEventListener("mousedown", handleClickOutside)
+                return ()=> document.removeEventListener("mouseclick", handleClickOutside)
+            },[])
+
+            
+
         return(
 
             <section className="min-h-screen bg-green-50">
@@ -115,7 +161,8 @@ function Gest_compte(){
                 <Nav_bar_with_searchbar/>
             </section>
 
-            <section className="container mx-auto">
+            <section className="container mx-auto pt-20">
+                
                 <div className="flex flex-row justify-between items-center">
                     <div className="flex flex-col gap-1 pb-10">
                     <h1 className="text-3xl font-bold font-serif text-blue-700">Gestion des Comptes</h1>
@@ -123,7 +170,7 @@ function Gest_compte(){
                     </div>
                     <div className="flex flex-row">
                         <div className="flex flex-col gap-1 pb-10">
-                            <button className="border border-gray-300 bg-blue-700 text-white rounded-lg p-2 flex gap-2 hover:cursor-pointer shadow-lg hover:scale-102 hover:bg-blue-600 px-3">
+                            <button className="border border-gray-300 bg-blue-700 text-white rounded-lg p-2 flex gap-2 hover:cursor-pointer shadow-lg hover:scale-102 hover:bg-blue-600 px-3" onClick={()=>naviguate("/addCompte")}>
                                 <p>+</p>
                                 <p>Ajouter un compte </p>
                             </button>
@@ -193,7 +240,7 @@ function Gest_compte(){
                 {!error ? <div className="bg-white container mx-auto mt-5 rounded-lg border border-gray-300 overflow-auto">
                     <table className="w-full ">
                         <thead>
-                        <tr className="border-b border-gray-300 ">
+                        <tr className="border-b border-gray-300">
                     {entete_tab.map((item, index)=>(
                         <td key={index} className="text-left px-2 py-2">{item}</td>
                         ))}
@@ -201,9 +248,9 @@ function Gest_compte(){
 
                     <tbody>
                         {elementActuel.map((item, index)=>(
-                            <tr key={index}>
+                            <tr key={index} className="hover:bg-gray-100 hover:cursor-pointer">
                                 {indice_tab.map((val, idx)=>(
-                                    idx === 0 ? <td key={idx}><img src={item[val]} alt="" className="px-2 w-15 py-1 rounded-full"/></td> :
+                                    idx === 0 ? <td key={idx}><img src={item[val]} alt="" className="px-2 size-15 py-1 rounded-full"/></td> :
                                     <td className="" key={idx}>
                                         {item[val]}
                                     </td>
@@ -212,8 +259,16 @@ function Gest_compte(){
                                     <div className=" flex  gap-2 ">
                                     {icone_tab.map((icone, index)=>(
                                         
-                                            <button className="hover:cursor-pointer">
-                                                <img src={icone} alt="" className="w-8"/>
+                                            <button key={index} className="hover:cursor-pointer">
+                                                <img src={icone} alt="" className="w-8" onClick={()=>{
+                                                    if(icone === oeil) onDisplay(item)
+                                                    else if(icone ===crayon){
+                                                        console.log("crayon")
+                                                    }
+                                                    else{
+                                                        addUserToDel(item)
+                                                    }
+                                                }}/>
                                             </button>
                                        
                                     ))}
@@ -255,7 +310,104 @@ function Gest_compte(){
                 </div>
                 </section>
             </section>   
+            
+            {
+                modalToDel && <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
+                <div className="bg-white rounded-lg p-6 shadow-lg w-auto">
+                <h2 className="text-lg font-semibold mb-4">Confirmer la suppression</h2>
+                <p className="mb-4">Voulez-vous vraiment supprimer le produit "{userToDel?.nom}" ?</p>
+                <p className="mb-4">Cette action est irréversible <b>{userToDel?.name}</b> ?</p>
+                <div className="flex justify-end gap-4">
+                    <button
+                    className="px-4 py-2 bg-gray-300 rounded hover:cursor-pointer"
+                    onClick={() => setModalToDel(false)}
+                    >
+                    Annuler
+                    </button>
+                    <button
+                    className="px-4 py-2 bg-red-500 text-white rounded hover:cursor-pointer"
+                    onClick={()=>onDel(userToDel.id)}
+                    >
+                    Supprimer
+                    </button>
+                </div>
+                </div>
+            </div>
+            }
+
+                {modalInfos && <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
+                <div ref={modalRef} className="fixed bg-white rounded-lg p-6 shadow-lg min-w-1/4 min-h-3/4">
+                    <div className="absolute top-2 right-5 hover:border hover:border-gray-300 hover:px-2 rounded-lg hover:cursor-pointer" onClick={()=>setModalInfos(false)}>
+                        x
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <div className="flex flex-col border-b border-gray-300">
+                            <div className="flex flex-col gap-2 items-center"> 
+                                <img src={userToView.Photo} alt="" className="border border-gray-300 rounded-full size-30"/>
+                                <h1 className="font-bold text-xl">
+                                    {userToView.Nom}
+                                </h1>
+                            </div>
+                            <div className="flex gap-2 items-center justify-center mt-2 pb-2">
+                                <p className={`${userToView.Role === "Client" ? "bg-gray-100 p-1 px-3 rounded-lg" : userToView.Role === "Admin" ? "bg-blue-700 p-1 px-3 rounded-lg text-white" : "bg-white p-1 px-3 rounded-lg border border-gray-300"}`}>
+                                    {userToView.Role}
+                                </p>
+                                <p className={`${userToView.Statut === "Actif" ? "bg-blue-700 p-1 px-3 text-white rounded-lg" : userToView.Statut === "Inactif" ? "bg-gray-100 p-1 px-3 rounded-lg" : "bg-red-700 text-white border border-gray-300 p-1 px-3 rounded-lg"}`}>
+                                    {userToView.Statut}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-3 pb-2 border-b border-gray-300">
+                            <h1 className="font-bold text-xl">
+                                Informations de contact
+                            </h1>
+                            <div className="flex gap-2 items-start">
+                                <Mail />
+                                <p className="">
+                                    {userToView.Email}
+                                </p>
+                            </div >
+                                
+                            <div className="flex gap-2 items-start">
+                                <Building2 />
+                                <p>
+                                    {userToView.Entreprise}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-3 border-b pb-2 border-gray-300">
+                            <h1 className="font-bold text-xl">
+                                Informations de Connection
+                            </h1>
+
+                            <div className="flex flex-col items-start">
+                                <h2 className="font-medium text-lg">Login</h2>
+                                <p className="">
+                                    {userToView.Login}
+                                </p>
+                            </div >
+                            <div className="flex flex-col items-start">
+                                <h2 className="font-medium text-lg">Mot de passe</h2>
+                                <p className="">
+                                    {userToView.MotDePasse}
+                                </p>
+                            </div >
+                        </div>
+
+                        <div className="flex gap-3 border-b pb-2 border-gray-300">
+                            <Calendar />
+                            <p>Inscrit le {userToView.inscription}</p>
+                        </div>
+
+
+                    </div>
+                </div>
+                </div>} 
+
             </section>
+            
 
         )
 
