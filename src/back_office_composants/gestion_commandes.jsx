@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Nav_bar_with_searchbar } from "../composants";
 import total_com_img from "../img/icone/icone_total_commande.webp"
 import icone_erreur from "../img/icone/icone_erreur.webp"
@@ -6,7 +6,7 @@ import icone_termine from "../img/icone/icone_termine.webp"
 import icone_attent from "../img/icone/icone_en_attente.webp"
 import {useCommande} from "../vitrine_composants/hook_personnalise.jsx"
 import {CompCom, AfficheDetail} from "./composants_commandes.jsx"
-import { Search } from "lucide-react";
+import { Search, Download, Printer } from "lucide-react";
 function Gest_com(){
     const [commande_tab, setCommande_tab] = useCommande()
     const [elementTrouve, setElementTrouve] = useState(commande_tab)
@@ -16,12 +16,15 @@ function Gest_com(){
     const indexPremier = indexDernier - elementParPage
     const elementActuel = elementTrouve.slice(indexPremier, indexDernier)
     const nbPage = Math.ceil(elementTrouve.length / elementParPage)
-
+    const [montFacture, setMontFacture] = useState("")
+    const [tvaFact, setTvaFact] = useState("")
+    const [notes, setNotes]= useState("")
     
     const [SearchItem, setSearchItem] = useState("")
     const [error, setError]=useState("")
 
-  
+    const enteteFacture = ["Description", "Quantité", "Prix "]
+    const tabFacture = ["caract", "qte", ]
     const handleSearch = (e)=>{
         const valeur = e.target.value
         setSearchItem(valeur)
@@ -36,7 +39,6 @@ function Gest_com(){
                 
             ))
             
-            console.log(comSearch)
             if(comSearch.length >0 ){
                 setElementTrouve(comSearch)
                 setError("")
@@ -45,6 +47,31 @@ function Gest_com(){
             }
         }
     }
+
+        const factureRef = useRef(null)
+        const [showFacture, setShowFacture] = useState(false)
+
+        const handleShowFacture = (commande) => {
+            setCommandeSelect(commande)
+            setShowFacture(true)
+        }
+        const handleChange = (e)=>{
+            const {name, value} = e.target
+            setCommandeSelect((prev)=>({...prev, [name]: value}))
+        }
+
+
+        useEffect(()=>{
+            const clickOutside =(e)=>{
+                if(factureRef.current && !factureRef.current.contains(e.target)){
+                    setShowFacture(false)
+                }
+            }
+            document.addEventListener("mousedown", clickOutside)
+            return()=>{
+                document.removeEventListener("mousedown", clickOutside)
+            }
+        },[])
 
 
  const getPage = ()=>{
@@ -80,7 +107,17 @@ function Gest_com(){
     setOpen(true)
   }
 
-  const handleClose = () => setOpen(false)
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const handleChangeFact = (e)=>{
+    const {name, value} = e.target
+    if(name ==="mont")setMontFacture(value)
+        else if(name ==="tva") setTvaFact(value)
+        else if(name === "note") setNotes(value)
+  
+  }
 
     const index_tab = ["idCom","entreprise","catCom","typeProd","qte","statut"]
     const titre_tab = ["N° Commande", "Client", "Catégorie de Commande", "Type de Produit",  "Quantité", "Statut","Montant", "Action" ]
@@ -107,7 +144,7 @@ function Gest_com(){
         }
     ]
     return(
-
+        <>
         <section className={``}>
             <section className="pb-20">
                 <Nav_bar_with_searchbar/>
@@ -184,13 +221,13 @@ function Gest_com(){
 
                         <tbody>
                             {elementActuel.map((item, index)=>(
-                                <tr key={index} className="border-b border-gray-300">
+                                <tr key={index} className="border-b border-gray-300 ">
                                     {index_tab.map((val, idx)=>(
-                                        <td key={idx} className="pb-3">{item[val]}</td>
+                                        <td key={idx} className="p-5">{item[val]}</td>
                                     ))}
                                     <td className="">_</td>
                                     <td>
-                                        <CompCom onVoirDetailsClick={() => handleVoirDetails(item)} />
+                                        <CompCom onVoirDetailsClick={() => handleVoirDetails(item)} onClick={()=>handleShowFacture(item)}/>
                                     </td>
                                 </tr>
                             ))}
@@ -226,8 +263,126 @@ function Gest_com(){
             </section>
 
             <AfficheDetail open={open} onClose={handleClose} commande={commandeSelect} />
-
         </section>
+
+       {showFacture &&<section className="bg-black/20 fixed top-0 left-0 min-h-screen min-w-screen ">
+                    <div  ref={factureRef}  className="min-h-[75%] max-h-[80vh] overflow-y-auto w-1/4  bg-white top-1/2 left-1/2 fixed p-4 -translate-x-1/2 -translate-y-1/2 flex flex-col rounded-lg gap-4 font-serif ">
+                        <div className=" flex flex-col gap-2">
+                            <h2 className="font-medium text-xl">
+                                Générer une facture
+                            </h2>
+                            <p className="text-gray-400 ">
+                                Gérer et télécharger une facture pour la commande {""}
+                            </p>
+                        </div>
+
+                        <div className="flex justify-between  gap-4">
+                            <div className="flex flex-col gap-2 flex-1">
+                                <h3 className="idCom">
+                                    Numéro de Facture
+                                </h3>
+                                <input type="text" name="idCom" id="idCom" className="border border-gray-300 rounded-lg p-2 " value={commandeSelect.idCom} onChange={handleChange}/>
+                            </div>
+
+                            <div className="flex flex-col gap-2 flex-1">
+                                <h3 className="">
+                                    Date
+                                </h3>
+                                <input type="date" className="border border-gray-300 rounded-lg p-2 "/>
+                            </div>
+
+                        </div>
+
+                        <div className="flex flex-col border border-gray-300 rounded-lg p-4 gap-2">
+                            <h3 className="pb-2 font-medium">
+                                Informations Client
+                            </h3>
+
+                            <div className="flex gap-2">
+                                <p className="text-gray-400">Client :  </p>
+                                <p>{commandeSelect.nomComp}</p>
+                            </div>
+
+                            <div className="flex">
+                                <p className="text-gray-400">Commande : </p>
+                                <p>{commandeSelect.idCom}</p>
+                            </div>
+
+                        </div>
+
+
+                         <div className="flex flex-col border border-gray-300 rounded-lg p-4 gap-2">
+                            <h3 className="pb-2 font-medium">
+                                Informations Client
+                            </h3>
+
+                            <div className="flex">
+                                <p className="text-gray-400">Client : </p>
+                                <p>{" "}</p>
+                            </div>
+
+                            <div className="flex">
+                                <p className="text-gray-400">Commande : </p>
+                                <p>{" "}</p>
+                            </div>
+                            
+                        </div>
+
+                        <div className="rounded-lg overflow-hidden border border-gray-300">
+                            <table className="w-full">
+                            <thead>
+                                <tr className="rounded-lg border-b border-gray-300"> 
+                           {enteteFacture.map((item, index)=>(
+                                <th key={index} className="pb-2 bg-gray-50 p-2">{item}
+                                </th>
+                           ))} 
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr className="">
+                                    {tabFacture.map((item, index)=>(
+                                        <td key={index} className="p-2">{commandeSelect[item]}</td>
+                                    ))}
+                                    <td>
+                                        <input name="mont" type="text" className="border border-gray-300 p-2 rounded-lg mr-2 w-25" placeholder={commandeSelect.prix} value={montFacture || ""} onChange={handleChangeFact}/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                           </table>
+                           </div>
+  
+                           <div className="flex flex-col">
+                                    <label htmlFor="tva" className="pb-2 font-medium">
+                                        Taux de TVA (%)
+                                    </label>
+                                    <input name="tva" type="text" className="border border-gray-300 p-2 rounded-lg w-50" id="tva" value={tvaFact} onChange={handleChangeFact}/>
+                           </div>
+
+                           <div className="flex flex-col">
+                                 <label htmlFor="tva" className="pb-2 font-medium">
+                                        Notes (optionnel)
+                                    </label>
+                                    <textarea name="note" className="border border-gray-300 p-2 rounded-lg " id="note" value={notes} onChange={handleChangeFact}/>
+                           </div>
+
+                           <div className="flex gap-2 pb-5">
+                                    <button className="border border-gray-300 rounded-lg p-2 hover:cursor-pointer bg-blue-700 text-white flex flex-row gap-4 flex-1 text-center">
+                                        <Download />
+                                        <p>
+                                            Télécharger PDF
+                                        </p>
+                                    </button>
+
+                                    <button className="border border-gray-300 rounded-lg p-2 hover:cursor-pointer flex flex-row gap-4 flex-1 mx-auto ">
+                                        <Printer />
+                                        <p>
+                                            Imprimer
+                                        </p>
+                                   </button>
+                           </div>
+                    </div>
+        </section>}
+        </>
     )
 }
 export default Gest_com;

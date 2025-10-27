@@ -1,7 +1,7 @@
 import React,{ useEffect, useState, useRef} from "react";
 
 
-export function CompCom({onVoirDetailsClick}){
+export function CompCom({onVoirDetailsClick, onClick}){
     const [isVisible, setIsVisible] = useState(false);
     const divRef = useRef(null);
 
@@ -30,7 +30,10 @@ export function CompCom({onVoirDetailsClick}){
                         <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={onVoirDetailsClick}>
                             Voir détails
                         </li>
-                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={()=>{
+                            setIsVisible(!isVisible)
+                            onClick()
+                        }}>
                             Générer facture
                         </li>
                         <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
@@ -47,7 +50,7 @@ export function CompCom({onVoirDetailsClick}){
 
 }
 
-export function AfficheDetail({ open, onClose, commande }) {
+export function AfficheDetail({ open, onClose, onClick, commande }) {
     if (!open) {
         return null;
     }

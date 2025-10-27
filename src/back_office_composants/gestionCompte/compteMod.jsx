@@ -2,11 +2,15 @@ import React, {useState, useEffect, useContext} from "react";
 import { useCompte } from "../hookPersonnaliseCompte";
 import { Nav_bar_with_searchbar } from "../../composants";
 import {ArrowLeft, Eye} from "lucide-react"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-function CompteAdd(){
+function CompteMod(){
+
+    const userMod = useLocation().state || {}
+    useEffect(()=> console.log(userMod), [userMod])
+
 const [compte, setCompte] = useCompte()
-const [infosUser, setInfosUser] = useState({    
+/*const [infosUser, setInfosUser] = useState({    
     id: "",
     Nom: "",
     Email: "",
@@ -16,19 +20,43 @@ const [infosUser, setInfosUser] = useState({
     Statut: "Actif",
     inscription: "",
     Photo: "",
-    MotDePasse: ""})
+    MotDePasse: ""})*/
 
-    const [nom, setNom] = useState("")
-    const [prenom, setPrenom] = useState("")
-    const [email, setEmail] = useState("")
-    const [tel, setTel] = useState("")
-    const [entreprise, setEntreprise] = useState("")
-    const [login, setLogin] = useState("")
-    const [password, setPassword] = useState("")
-    const [roleUser, setRoleUser] = useState("")
-    const [showPassword, setShowPassword] = useState(false)
-    const [photo, setPhoto] = useState("")
+    const [showPassword,setShowPassword] = useState(false)
     const [modal, setModal] = useState(false)
+    const [tel, setTel] = useState("");
+    const [email, setEmail] = useState("");
+    const [nom, setNom] = useState("");
+    const [prenom, setPrenom] = useState("");
+    const [entreprise, setEntreprise] = useState("");
+    const [login, setLogin] = useState("");
+    const [password, setPassword] = useState("");
+    const [roleUser, setRoleUser] = useState("Client");
+    const [statut, setStatut] = useState("Actif");
+    const [dateString, setDateString] = useState("");
+    const [photo, setPhoto] = useState("");
+
+    useEffect(() => {
+  if (userMod && userMod.Nom) {
+    const index_name = userMod.Nom.indexOf(" ");
+    const nomMod = index_name !== -1 ? userMod.Nom.slice(0, index_name) : userMod.Nom;
+    const pnomMod = index_name !== -1 ? userMod.Nom.slice(index_name + 1) : "";
+
+
+    setNom(nomMod);
+    setPrenom(pnomMod);
+    setTel(userMod.Tel || "");
+    setEmail(userMod.Email || "");
+    setEntreprise(userMod.Entreprise || "");
+    setLogin(userMod.Login || "");
+    setPassword(userMod.MotDePasse || "");
+    setRoleUser(userMod.Role || "Client");
+    setStatut(userMod.Statut || "Actif");
+    setDateString(userMod.inscription || "");
+    setPhoto(userMod.Photo || "");
+  }
+}, [userMod]);
+    
 
 
     const naviguate = useNavigate()
@@ -65,9 +93,8 @@ const [infosUser, setInfosUser] = useState({
             setShowPassword(!showPassword)
         }
     }
-    const onAdd = (e) => {
-        const date = new Date()
-        const dateString = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+    const onMod = (e) => {
+
         const newUser = {
             id: compte.length + 1,
             Nom: nom + " " + prenom,
@@ -75,12 +102,14 @@ const [infosUser, setInfosUser] = useState({
             Login: login,
             Entreprise: entreprise,
             Role: roleUser,
-            Statut: "Actif",
+            Statut: statut,
             inscription: dateString,
             Photo: photo,
             MotDePasse: password,
+            Tel : tel
+
         }
-        setCompte((prev)=>[...prev, newUser])
+        setCompte((prev)=>prev.map((item)=>item.id === userMod.id ? newUser : item))
         setModal(true)
     }
     
@@ -155,7 +184,7 @@ const [infosUser, setInfosUser] = useState({
                     <label htmlFor="entreprise" className="font-medium">
                             Entrprise *
                         </label>
-                        <input placeholder="ex : imprimerie ko" id="entreprise" name="entreprise" type="text" className="border border-gray-300 rounded-lg p-2" onChange={handleChange}/>
+                        <input placeholder="ex : imprimerie ko" id="entreprise" name="entreprise" value={entreprise} type="text" className="border border-gray-300 rounded-lg p-2" onChange={handleChange}/>
                 </div>
                     <div className="flex flex-col justify-between gap-1  pb-5">
                     <label htmlFor="file" className="font-medium">
@@ -188,15 +217,15 @@ const [infosUser, setInfosUser] = useState({
                     <label htmlFor="login" className="font-medium">
                             Login *
                         </label>
-                        <input id="login" name="login"type="text" className="border border-gray-300 rounded-lg p-2" onChange={handleChange}/>
+                        <input id="login" name="login" value={login} type="text" className="border border-gray-300 rounded-lg p-2" onChange={handleChange}/>
                 </div>
 
               <div className="flex items-center gap-5">
-                <div className="flex flex-col justify-between gap-1 pb-5 w-3/4">
+                <div className="flex flex-col justify-between gap-1 pb-5 w-[95%]">
                     <label htmlFor="password" className="font-medium">
                             Mot de passe *
                         </label>
-                        <input id="password" name="password" type={showPassword ? "text" : "password"} className="border border-gray-300 rounded-lg p-2" onChange={handleChange}/>
+                        <input id="password" value={password} name="password" type={showPassword ? "text" : "password"} className="border border-gray-300 rounded-lg p-2" onChange={handleChange}/>
                 </div>
                 <div>
                     <input type="checkbox" name="showPassword" id="showPassword" hidden={true}onChange={handleChange}/> <label htmlFor="showPassword"><Eye /></label>
@@ -208,7 +237,7 @@ const [infosUser, setInfosUser] = useState({
                     <label className="font-medium" htmlFor="role">
                             Rôle *
                         </label>
-                        <select id="role" name="role" className="border border-gray-300 rounded-lg py-2 px-2" defaultValue={"Client"} onChange={handleChange}>
+                        <select id="role" name="role" className="border border-gray-300 rounded-lg py-2 px-2" defaultValue={roleUser} onChange={handleChange}>
                             {role.map((item, index)=>
                                 <option  key={index} value={item}>{item}</option>
                             )}
@@ -219,7 +248,7 @@ const [infosUser, setInfosUser] = useState({
               </section>
 
               <div className="flex justify-end">
-                <button className="border border-gray-300 bg-blue-700 hover:bg-blue-600 text-white rounded-lg p-2 px-10 hover:cursor-pointer" onClick={onAdd}>
+                <button className="border border-gray-300 bg-blue-700 hover:bg-blue-600 text-white rounded-lg p-2 px-10 hover:cursor-pointer" onClick={onMod}>
                     Ajouter
                 </button>
               </div>
@@ -232,7 +261,7 @@ const [infosUser, setInfosUser] = useState({
                         Informations
                     </div>
                     <p className="">
-                        Nouveau compte ajouté avec succès
+                        Modification effectuée avec succès
                     </p>
                     <div className="mt-5 flex justify-end"><button onClick={onClose} className="border border-gray-300 px-5 py-1 rounded-lg bg-blue-700 text-white hover:cursor-pointer hover:bg-blue-600">
                         Fermer
@@ -244,4 +273,4 @@ const [infosUser, setInfosUser] = useState({
         </>
     )
 }
-export default CompteAdd
+export default CompteMod

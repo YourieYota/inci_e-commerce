@@ -150,6 +150,30 @@ function Gest_compte(){
                 return ()=> document.removeEventListener("mouseclick", handleClickOutside)
             },[])
 
+            const [roleSearch, setRoleSearch] = useState("")
+            const [statutSearch, setStatutSearch] = useState("")
+
+            const handleChangeRole = (e)=>{
+                const {name, value} = e.target
+                if (name === "role") setRoleSearch(value)
+                    else setStatutSearch(value)    
+
+                if (name === "role" && value === "Tous les rôles") setElementTrouve(compte)
+                    else if(name ==="role" && value === "Admin") setElementTrouve(compte.filter((p)=> p.Role === "Admin"))
+                        else if(name === "role" && value === "Client") setElementTrouve(compte.filter((p)=> p.Role === "Client"))
+                            else if (name === "role" && value === "Invité") setElementTrouve(compte.filter((p)=> p.Role === "Invité"))
+                
+                if (name === "statut" && value === "Actif") setElementTrouve(compte.filter((p)=> p.Statut === "Actif"))
+                    else if (name === "statut" && value === "Inactif") setElementTrouve(compte.filter((p)=> p.Statut === "Inactif"))
+                        else if (name === "statut" && value === "Suspendu") setElementTrouve(compte.filter((p)=> p.Statut === "Suspendu"))
+        }
+                
+                
+        useEffect(()=> console.log(roleSearch, statutSearch), [roleSearch, statutSearch])
+        
+        
+            
+
             
 
         return(
@@ -220,13 +244,13 @@ function Gest_compte(){
                     </div>
 
                     <div className="flex gap-3">
-                        <select name="" id="" className="border border-gray-300 p-2 px-5 rounded-lg text-left">
+                        <select name="role" id="" value={roleSearch} className="border border-gray-300 p-2 px-5 rounded-lg text-left" onChange={(handleChangeRole)}>
                             {tab_role.map((item, index)=>(
                                 <option key={index}>{item}</option>
                             ))}
                         </select>
 
-                        <select name="" id="" className="border border-gray-300 p-2 px-5 rounded-lg text-left">
+                        <select name="statut" id="" value={statutSearch} onChange={handleChangeRole} className="border border-gray-300 p-2 px-5 rounded-lg text-left">
                             {tab_statut.map((item, index)=>(
                                 <option key={index}>{item}</option>
                             ))}
@@ -250,8 +274,8 @@ function Gest_compte(){
                         {elementActuel.map((item, index)=>(
                             <tr key={index} className="hover:bg-gray-100 hover:cursor-pointer">
                                 {indice_tab.map((val, idx)=>(
-                                    idx === 0 ? <td key={idx}><img src={item[val]} alt="" className="px-2 size-15 py-1 rounded-full"/></td> :
-                                    <td className="" key={idx}>
+                                    idx === 0 ? <td key={idx}><img src={item[val]} alt="" className="px-2 size-15 py-1 rounded-full" onClick={()=>onDisplay(item)}/></td> :
+                                    <td className="" key={idx} onClick={idx !==9 ? ()=>onDisplay(item) : null}>
                                         {item[val]}
                                     </td>
                                 ))}
@@ -263,7 +287,9 @@ function Gest_compte(){
                                                 <img src={icone} alt="" className="w-8" onClick={()=>{
                                                     if(icone === oeil) onDisplay(item)
                                                     else if(icone ===crayon){
-                                                        console.log("crayon")
+                                                        naviguate("/modCompte",
+                                                            {state : item}
+                                                        )
                                                     }
                                                     else{
                                                         addUserToDel(item)
@@ -386,6 +412,12 @@ function Gest_compte(){
                                 <h2 className="font-medium text-lg">Login</h2>
                                 <p className="">
                                     {userToView.Login}
+                                </p>
+                            </div >
+                            <div className="flex flex-col items-start">
+                                <h2 className="font-medium text-lg">Numéro</h2>
+                                <p className="">
+                                    {userToView.Tel}
                                 </p>
                             </div >
                             <div className="flex flex-col items-start">

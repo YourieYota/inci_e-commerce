@@ -155,6 +155,7 @@ function Gest_prod(){
             <section className="pb-20">
                 <Nav_bar_with_searchbar/>
             </section>
+            <section className="min-h-screen">
             <section className="container mx-auto">
                             <div className="flex flex-row justify-between items-center">
                             <div className="flex flex-col gap-1 pb-10">
@@ -347,6 +348,7 @@ function Gest_prod(){
     nomPage = {nomPage}
   />
 )}
+    </section>
     </section>
             
             

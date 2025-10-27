@@ -12,7 +12,7 @@ export function useCompte(){
 
 export function CompteProvider({children}){
     const [compte, setCompte] = useState([
-    {
+  {
     id: 1,
     Nom: "Yourie Yota",
     Email: "yourie@test.com",
@@ -22,7 +22,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "20/10/2025",
     Photo: gojo,
-    MotDePasse: "Yota@2025!"
+    MotDePasse: "Yota@2025!",
+    Tel: "+225 07 45 89 21 36"
   },
   {
     id: 2,
@@ -34,7 +35,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "22/01/2025",
     Photo: "https://randomuser.me/api/portraits/women/2.jpg",
-    MotDePasse: "Marie2025#"
+    MotDePasse: "Marie2025#",
+    Tel: "+225 05 67 12 45 80"
   },
   {
     id: 3,
@@ -46,7 +48,8 @@ export function CompteProvider({children}){
     Statut: "Inactif",
     inscription: "18/04/2025",
     Photo: "https://randomuser.me/api/portraits/women/4.jpg",
-    MotDePasse: "Fatou@123"
+    MotDePasse: "Fatou@123",
+    Tel: "+225 07 11 33 77 29"
   },
   {
     id: 4,
@@ -58,7 +61,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "21/09/2025",
     Photo: "https://randomuser.me/api/portraits/men/12.jpg",
-    MotDePasse: "Emile#456"
+    MotDePasse: "Emile#456",
+    Tel: "+225 01 22 48 93 77"
   },
   {
     id: 5,
@@ -70,7 +74,8 @@ export function CompteProvider({children}){
     Statut: "Inactif",
     inscription: "25/07/2025",
     Photo: "https://randomuser.me/api/portraits/men/8.jpg",
-    MotDePasse: "Soro!2025"
+    MotDePasse: "Soro!2025",
+    Tel: "+225 05 59 88 10 22"
   },
   {
     id: 6,
@@ -82,7 +87,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "03/07/2025",
     Photo: "https://randomuser.me/api/portraits/women/7.jpg",
-    MotDePasse: "Solange@07"
+    MotDePasse: "Solange@07",
+    Tel: "+225 07 38 41 99 64"
   },
   {
     id: 7,
@@ -94,7 +100,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "16/10/2025",
     Photo: "https://randomuser.me/api/portraits/men/15.jpg",
-    MotDePasse: "Bonsu#321"
+    MotDePasse: "Bonsu#321",
+    Tel: "+225 01 74 20 88 11"
   },
   {
     id: 8,
@@ -106,7 +113,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "14/08/2025",
     Photo: "https://randomuser.me/api/portraits/women/9.jpg",
-    MotDePasse: "Amina*2025"
+    MotDePasse: "Amina*2025",
+    Tel: "+225 05 60 25 74 98"
   },
   {
     id: 9,
@@ -118,7 +126,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "12/06/2025",
     Photo: "https://randomuser.me/api/portraits/men/6.jpg",
-    MotDePasse: "Adje@ci"
+    MotDePasse: "Adje@ci",
+    Tel: "+225 07 32 56 40 13"
   },
   {
     id: 10,
@@ -130,7 +139,8 @@ export function CompteProvider({children}){
     Statut: "Inactif",
     inscription: "20/10/2025",
     Photo: "https://randomuser.me/api/portraits/women/16.jpg",
-    MotDePasse: "Aimee123!"
+    MotDePasse: "Aimee123!",
+    Tel: "+225 01 93 74 52 08"
   },
   {
     id: 11,
@@ -142,7 +152,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "10/10/2025",
     Photo: "https://randomuser.me/api/portraits/women/14.jpg",
-    MotDePasse: "Rita@zongo"
+    MotDePasse: "Rita@zongo",
+    Tel: "+225 07 28 10 45 92"
   },
   {
     id: 12,
@@ -154,7 +165,8 @@ export function CompteProvider({children}){
     Statut: "Inactif",
     inscription: "09/09/2025",
     Photo: "https://randomuser.me/api/portraits/women/11.jpg",
-    MotDePasse: "Rebecca#CI"
+    MotDePasse: "Rebecca#CI",
+    Tel: "+225 05 73 99 61 05"
   },
   {
     id: 13,
@@ -166,7 +178,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "05/03/2025",
     Photo: "https://randomuser.me/api/portraits/men/3.jpg",
-    MotDePasse: "Traore@03"
+    MotDePasse: "Traore@03",
+    Tel: "+225 01 22 87 14 60"
   },
   {
     id: 14,
@@ -178,7 +191,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "30/05/2025",
     Photo: "https://randomuser.me/api/portraits/men/5.jpg",
-    MotDePasse: "YapiEco2025"
+    MotDePasse: "YapiEco2025",
+    Tel: "+225 05 84 36 90 47"
   },
   {
     id: 15,
@@ -190,7 +204,8 @@ export function CompteProvider({children}){
     Statut: "Suspendu",
     inscription: "01/09/2025",
     Photo: "https://randomuser.me/api/portraits/men/10.jpg",
-    MotDePasse: "Issa#999"
+    MotDePasse: "Issa#999",
+    Tel: "+225 07 44 70 55 02"
   },
   {
     id: 16,
@@ -202,7 +217,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "04/10/2025",
     Photo: "https://randomuser.me/api/portraits/men/13.jpg",
-    MotDePasse: "Akonor@sam"
+    MotDePasse: "Akonor@sam",
+    Tel: "+225 01 56 63 24 81"
   },
   {
     id: 17,
@@ -214,7 +230,8 @@ export function CompteProvider({children}){
     Statut: "Suspendu",
     inscription: "10/02/2025",
     Photo: "https://randomuser.me/api/portraits/men/1.jpg",
-    MotDePasse: "Koffi123!"
+    MotDePasse: "Koffi123!",
+    Tel: "+225 05 64 18 70 09"
   },
   {
     id: 18,
@@ -226,7 +243,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "19/10/2025",
     Photo: "https://randomuser.me/api/portraits/men/18.jpg",
-    MotDePasse: "Assane@BT"
+    MotDePasse: "Assane@BT",
+    Tel: "+225 07 21 48 11 30"
   },
   {
     id: 19,
@@ -238,7 +256,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "21/09/2025",
     Photo: "https://randomuser.me/api/portraits/women/19.jpg",
-    MotDePasse: "Salima@21"
+    MotDePasse: "Salima@21",
+    Tel: "+225 01 45 69 84 72"
   },
   {
     id: 20,
@@ -250,7 +269,8 @@ export function CompteProvider({children}){
     Statut: "Suspendu",
     inscription: "12/08/2025",
     Photo: "https://randomuser.me/api/portraits/men/20.jpg",
-    MotDePasse: "Bamba@TLCI"
+    MotDePasse: "Bamba@TLCI",
+    Tel: "+225 07 55 60 90 33"
   },
   {
     id: 21,
@@ -262,7 +282,8 @@ export function CompteProvider({children}){
     Statut: "Inactif",
     inscription: "05/10/2025",
     Photo: "https://randomuser.me/api/portraits/women/21.jpg",
-    MotDePasse: "Chantal05!"
+    MotDePasse: "Chantal05!",
+    Tel: "+225 05 39 88 22 61"
   },
   {
     id: 22,
@@ -274,7 +295,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "11/06/2025",
     Photo: "https://randomuser.me/api/portraits/men/22.jpg",
-    MotDePasse: "Sanogo@Admin"
+    MotDePasse: "Sanogo@Admin",
+    Tel: "+225 01 11 75 68 24"
   },
   {
     id: 23,
@@ -286,7 +308,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "09/07/2025",
     Photo: "https://randomuser.me/api/portraits/women/23.jpg",
-    MotDePasse: "Florence09!"
+    MotDePasse: "Florence09!",
+    Tel: "+225 07 30 55 64 48"
   },
   {
     id: 24,
@@ -298,7 +321,8 @@ export function CompteProvider({children}){
     Statut: "Suspendu",
     inscription: "10/03/2025",
     Photo: "https://randomuser.me/api/portraits/men/24.jpg",
-    MotDePasse: "Ibrahim@2025"
+    MotDePasse: "Ibrahim@2025",
+    Tel: "+225 01 66 43 72 10"
   },
   {
     id: 25,
@@ -310,7 +334,8 @@ export function CompteProvider({children}){
     Statut: "Actif",
     inscription: "17/10/2025",
     Photo: "https://randomuser.me/api/portraits/women/25.jpg",
-    MotDePasse: "Esther@ok"
+    MotDePasse: "Esther@ok",
+    Tel: "+225 07 50 99 18 65"
   }
 ]
 )
